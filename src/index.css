@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper font-body text-charcoal antialiased;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  ::selection {
+    @apply bg-moss/20 text-forest;
+  }
+}
+
+@layer components {
+  /* Section shell — generous Wabi-Sabi breathing room */
+  .section {
+    @apply px-6 py-24 sm:px-10 md:py-32 lg:px-16;
+  }
+
+  .section-inner {
+    @apply mx-auto max-w-6xl;
+  }
+
+  /* Small uppercase eyebrow label */
+  .eyebrow {
+    @apply mb-4 block font-body text-xs font-medium uppercase tracking-widest2 text-gold;
+  }
+
+  .heading-xl {
+    @apply font-display text-4xl font-light leading-tight text-forest sm:text-5xl md:text-6xl;
+  }
+
+  .heading-lg {
+    @apply font-display text-3xl font-light leading-snug text-forest sm:text-4xl md:text-5xl;
+  }
+
+  .heading-md {
+    @apply font-display text-2xl font-normal text-forest sm:text-3xl;
+  }
+
+  .body-muted {
+    @apply text-base font-light leading-relaxed text-charcoal/70;
+  }
+
+  /* Buttons — minimal, calm */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3 text-sm font-medium tracking-wide transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply btn bg-forest text-paper hover:bg-moss;
+  }
+
+  .btn-outline {
+    @apply btn border border-forest/30 text-forest hover:border-forest hover:bg-forest/5;
+  }
+
+  .btn-gold {
+    @apply btn border border-gold/50 text-clay hover:bg-gold/10;
+  }
+
+  /* Card */
+  .card {
+    @apply rounded-card bg-white/70 shadow-card backdrop-blur-sm;
+  }
+}
