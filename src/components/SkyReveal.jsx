@@ -7,8 +7,9 @@ import { videoSrc } from "./shared/media.js";
  *
  * One continuous 15-second shot: planet Earth → India → the Western
  * Ghats near Coimbatore → Attappadi → the AKASA masterplan. The video
- * plays automatically (muted, looping) when the section is on screen
- * and pauses off screen. Location captions fade in and out in sync
+ * plays automatically (muted, once) when the section is on screen,
+ * pauses off screen, and holds its final masterplan frame after it
+ * ends. Location captions fade in and out in sync
  * with the film's timeline — no scroll scrubbing involved.
  *
  * /videos/earth-zoom.mp4 · 2560×1440 · lazy-loaded when the section
@@ -75,7 +76,8 @@ export default function SkyReveal() {
       ([entry]) => {
         const video = videoRef.current;
         if (!video) return;
-        if (entry.isIntersecting) video.play().catch(() => {});
+        // Play once: never restart after the film has ended
+        if (entry.isIntersecting && !video.ended) video.play().catch(() => {});
         else video.pause();
       },
       // The section is 250vh, so only ~40% can ever be visible at once —
@@ -125,10 +127,13 @@ export default function SkyReveal() {
             className="relative h-full w-full object-cover"
             muted
             playsInline
-            loop
             preload="auto"
             poster="/images/masterplan-aerial.jpg"
             onTimeUpdate={onTimeUpdate}
+            onEnded={() => {
+              setStage(-1);
+              setShowFinal(true);
+            }}
           >
             <source src={videoSrc("earth-zoom")} type="video/mp4" />
           </video>
