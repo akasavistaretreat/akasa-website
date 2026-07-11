@@ -155,6 +155,15 @@ export default function SkyReveal() {
           }`}
         />
 
+        {/* Persistent legibility wash — present whenever a caption is on
+            screen, so text stays readable over bright frames (clouds,
+            daylight Earth) instead of relying on drop-shadow alone */}
+        <div
+          className={`pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-ink/85 via-ink/40 to-transparent transition-opacity duration-500 ${
+            stage >= 0 && !showFinal ? "opacity-100" : "opacity-0"
+          }`}
+        />
+
         {/* Journey stage captions — synced to the film */}
         {STAGES.map((s, i) => (
           <div
@@ -165,10 +174,10 @@ export default function SkyReveal() {
                 : "translate-y-4 opacity-0"
             }`}
           >
-            <span className="eyebrow !text-goldsoft drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)]">
+            <span className="eyebrow !mb-2 !text-goldsoft drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
               {s.eyebrow}
             </span>
-            <p className="mx-auto mt-2 max-w-xl px-6 font-display text-lg font-light text-paper/90 drop-shadow-[0_1px_10px_rgba(0,0,0,0.8)] sm:text-xl">
+            <p className="mx-auto mt-2 max-w-xl px-6 font-display text-xl font-normal text-paper drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)] sm:text-2xl">
               {s.line}
             </p>
           </div>
