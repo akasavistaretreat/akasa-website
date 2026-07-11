@@ -85,7 +85,7 @@ export default function CinematicShowcase() {
 
   return (
     <section ref={ref} aria-label="Planned resort film" className="relative h-[340vh] bg-ink">
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-svh overflow-hidden">
         {/* Film 1 — Pool Villa dolly-in.
             The poster <img> sits behind the video so there is never a
             black frame while the decoder catches up. */}

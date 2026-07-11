@@ -61,7 +61,7 @@ export default function Hero() {
   return (
     <section ref={sectionRef} className="relative h-[150vh] bg-forest">
       {/* Pinned viewport — stays fixed while the section scrolls beneath */}
-      <div className="sticky top-0 flex h-screen flex-col justify-end overflow-hidden">
+      <div className="sticky top-0 flex h-svh flex-col justify-end overflow-hidden">
         {/* Background video: slow ambient loop — plays on the media pipeline,
             costs nothing while scrolling (scrubbing is reserved for the
             pinned showcase sections) */}
@@ -88,7 +88,7 @@ export default function Hero() {
 
         <motion.div
           style={{ opacity: contentOpacity, y: contentY }}
-          className="relative mx-auto w-full max-w-6xl px-6 pb-16 pt-40 sm:px-10"
+          className="relative mx-auto w-full max-w-6xl px-6 pb-12 pt-28 sm:px-10 sm:pb-16 sm:pt-40"
         >
           <motion.p
             initial={{ opacity: 0 }}
@@ -112,7 +112,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.55 }}
-            className="mt-6 max-w-xl text-base font-light leading-relaxed text-paper/80"
+            className="mt-4 max-w-xl text-sm font-light leading-relaxed text-paper/80 sm:mt-6 sm:text-base"
           >
             AKASA Valley Retreat is a nature-led investment opportunity in Attappadi, planned
             around wellness, luxury villas, eco-tourism, and future resort hospitality.
@@ -122,7 +122,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.75 }}
-            className="mt-10 flex flex-wrap gap-3"
+            className="mt-6 flex flex-wrap gap-2.5 sm:mt-10 sm:gap-3"
           >
             <button onClick={() => scrollToId("contact")} className="btn bg-gold text-ink hover:bg-goldsoft">
               Enquire Now
@@ -147,7 +147,7 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.9 } } }}
-            className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
+            className="-mx-6 mt-8 flex gap-2.5 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-14 sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 lg:grid-cols-6"
           >
             {highlights.map((h) => (
               <motion.div
@@ -156,10 +156,10 @@ export default function Hero() {
                   hidden: { opacity: 0, y: 18 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
                 }}
-                className="rounded-card border border-paper/15 bg-ink/35 px-4 py-4"
+                className="min-w-[124px] shrink-0 rounded-card border border-paper/15 bg-ink/35 px-3.5 py-3 sm:min-w-0 sm:shrink sm:px-4 sm:py-4"
               >
-                <p className="font-display text-xl text-goldsoft sm:text-2xl">{h.value}</p>
-                <p className="mt-1 text-[11px] uppercase tracking-wider text-paper/70">{h.label}</p>
+                <p className="font-display text-lg text-goldsoft sm:text-2xl">{h.value}</p>
+                <p className="mt-1 text-[10px] uppercase tracking-wider text-paper/70 sm:text-[11px]">{h.label}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -168,7 +168,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.6 }}
-            className="mt-8 text-[11px] font-light text-paper/50"
+            className="mt-5 text-[11px] font-light text-paper/50 sm:mt-8"
           >
             Planned future resort vision. Subject to approvals and development timelines.
           </motion.p>

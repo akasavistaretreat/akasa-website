@@ -109,7 +109,7 @@ export default function SkyReveal() {
     // ~1.5 viewports of scroll pass through — a natural "hold" that gives
     // people time to watch, without ever taking control of their scroll.
     <section ref={sectionRef} className="relative h-[250vh] bg-ink">
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-svh overflow-hidden">
         {/* Poster fallback behind the film — never a black frame */}
         <img
           src="/images/masterplan-aerial.jpg"
