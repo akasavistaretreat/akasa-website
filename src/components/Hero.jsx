@@ -1,13 +1,7 @@
-import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useReducedMotion,
-} from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { scrollToId } from "./shared/Motion.jsx";
-import { useVideoScrub } from "./shared/ScrollFx.jsx";
+import { videoSrc } from "./shared/media.js";
 import { site } from "../data/site.js";
 
 const highlights = [
@@ -22,16 +16,29 @@ const highlights = [
 export default function Hero() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
-  const reduced = useReducedMotion();
+
+  // Pause the ambient loop once the hero scrolls out of view — a playing
+  // video keeps the decoder busy even when hidden, stealing scroll budget
+  useEffect(() => {
+    const section = sectionRef.current;
+    const video = videoRef.current;
+    if (!section || !video) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) video.play().catch(() => {});
+        else video.pause();
+      },
+      { threshold: 0 }
+    );
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
 
   // Progress through the tall hero section (0 at top, 1 when scrolled past)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
-
-  // Cinematic scrub: video advances with the scrollbar (Apple-style)
-  useVideoScrub(scrollYProgress, videoRef, !reduced);
 
   // Spring-smoothed progress — visual transforms ease toward the scroll
   // position instead of snapping to it, so fast flicks stay fluid
@@ -46,37 +53,37 @@ export default function Hero() {
   // held longer (to 0.9) so there is no empty stretch before the reveal
   const contentOpacity = useTransform(smooth, [0, 0.55, 0.9], [1, 1, 0]);
   const contentY = useTransform(smooth, [0, 0.9], [0, -60]);
-  const videoScale = useTransform(smooth, [0, 1], [1, 1.08]);
   const hintOpacity = useTransform(smooth, [0, 0.12], [1, 0]);
-  // Cloud veil: the last stretch of the hero whites out into cloud cover,
-  // which SkyReveal opens from — a continuous "ascend into clouds,
-  // descend into the valley" handoff instead of a dark gap
-  const veilOpacity = useTransform(smooth, [0.72, 1], [0, 1]);
+  // Night veil: the hero darkens to sky at its end, and SkyReveal opens
+  // in space — one continuous "leave the valley, see the Earth" move
+  const veilOpacity = useTransform(smooth, [0.85, 1], [0, 1]);
 
   return (
-    <section ref={sectionRef} className="relative h-[200vh] bg-forest">
+    <section ref={sectionRef} className="relative h-[150vh] bg-forest">
       {/* Pinned viewport — stays fixed while the section scrolls beneath */}
       <div className="sticky top-0 flex h-screen flex-col justify-end overflow-hidden">
-        {/* Background video: scrubs with scroll (loops if reduced motion) */}
-        <motion.video
+        {/* Background video: slow ambient loop — plays on the media pipeline,
+            costs nothing while scrolling (scrubbing is reserved for the
+            pinned showcase sections) */}
+        <video
           ref={videoRef}
-          style={{ scale: videoScale }}
-          className="absolute inset-0 h-full w-full object-cover opacity-60"
+          className="absolute inset-0 h-full w-full scale-[1.04] object-cover opacity-60"
           muted
           playsInline
           preload="auto"
           poster="/images/hero-valley.jpg"
-          autoPlay={reduced || undefined}
-          loop={reduced || undefined}
+          autoPlay
+          loop
         >
-          <source src="/videos/hero-valley.mp4" type="video/mp4" />
-        </motion.video>
+          <source src={videoSrc("hero-valley")} type="video/mp4" />
+        </video>
         {/* Soft charcoal wash for legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/20 to-ink/70" />
-        {/* Cloud veil — rises at the end of the hero and hands off to SkyReveal */}
+        {/* Night veil — darkens at the end of the hero and hands off to
+            SkyReveal's opening shot of Earth from space */}
         <motion.div
           style={{ opacity: veilOpacity }}
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white via-white/85 to-white/50"
+          className="pointer-events-none absolute inset-0 bg-ink"
         />
 
         <motion.div
@@ -149,7 +156,7 @@ export default function Hero() {
                   hidden: { opacity: 0, y: 18 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
                 }}
-                className="rounded-card border border-paper/10 bg-paper/10 px-4 py-4 backdrop-blur-md"
+                className="rounded-card border border-paper/15 bg-ink/35 px-4 py-4"
               >
                 <p className="font-display text-xl text-goldsoft sm:text-2xl">{h.value}</p>
                 <p className="mt-1 text-[11px] uppercase tracking-wider text-paper/70">{h.label}</p>

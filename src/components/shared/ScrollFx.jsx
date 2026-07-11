@@ -37,13 +37,23 @@ export function useVideoScrub(progress, videoRef, enabled = true) {
         raf.current = null;
         return;
       }
+      // Never stack seeks: wait until the decoder finishes the previous one.
+      // Piled-up seeks are what make scrolling feel heavy.
+      if (vid.seeking) {
+        raf.current = requestAnimationFrame(step);
+        return;
+      }
       const diff = target.current - vid.currentTime;
-      if (Math.abs(diff) < 0.02) {
-        vid.currentTime = target.current;
+      if (Math.abs(diff) < 1 / 30) {
         raf.current = null;
         return;
       }
-      vid.currentTime += diff * 0.25;
+      // One seek per displayed frame, eased toward the target.
+      // fastSeek lands on the nearest keyframe — and every frame is a
+      // keyframe in our encodes, so it's both precise and much cheaper.
+      const t = vid.currentTime + diff * 0.35;
+      if (typeof vid.fastSeek === "function") vid.fastSeek(t);
+      else vid.currentTime = t;
       raf.current = requestAnimationFrame(step);
     };
     raf.current = requestAnimationFrame(step);
@@ -73,7 +83,7 @@ export function ScrubVideo({ src, poster, className = "" }) {
         className="block h-full w-full object-cover"
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         poster={poster}
         autoPlay={reduced || undefined}
         loop={reduced || undefined}

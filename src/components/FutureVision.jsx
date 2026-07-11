@@ -1,6 +1,7 @@
 import { FadeUp } from "./shared/Motion.jsx";
 import { scrollToId } from "./shared/Motion.jsx";
 import { ScrubVideo } from "./shared/ScrollFx.jsx";
+import { videoSrc } from "./shared/media.js";
 
 export default function FutureVision() {
   return (
@@ -39,8 +40,8 @@ export default function FutureVision() {
           <div className="overflow-hidden rounded-card shadow-soft">
             {/* Scrubs forward as the visitor scrolls this section into view */}
             <ScrubVideo
-              src="/videos/masterplan-reveal.mp4"
-              poster="/images/masterplan-aerial.jpg"
+              src={videoSrc("masterplan-reveal")}
+              poster="/images/gallery-masterplan.jpg"
               className="aspect-[4/3] w-full"
             />
           </div>
