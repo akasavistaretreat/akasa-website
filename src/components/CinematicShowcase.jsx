@@ -34,10 +34,10 @@ function Beat({ progress, range, eyebrow, title, copy }) {
   return (
     <motion.div
       style={{ opacity, y }}
-      className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-6 pb-16 text-center sm:px-10 sm:pb-24"
+      className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-6 pb-16 text-center sm:px-10 sm:pb-24 [@media(max-height:680px)]:pb-8"
     >
       <span className="eyebrow !text-goldsoft">{eyebrow}</span>
-      <h2 className="font-display text-3xl font-light text-paper sm:text-5xl md:text-6xl">
+      <h2 className="font-display text-3xl font-light text-paper sm:text-5xl md:text-6xl [@media(max-height:680px)]:!text-2xl">
         {title}
       </h2>
       <p className="mx-auto mt-4 max-w-xl text-sm font-light leading-relaxed text-paper/80 sm:text-base">

@@ -13,6 +13,25 @@
     line-height: 1.7;
   }
 
+  /* Guard against horizontal overflow: negative-margin decorations, wide
+     hero cards and blur orbs can otherwise push a stray scroll axis at
+     certain widths, which reads as elements "shifting" or overlapping.
+     NOTE: use `clip`, not `hidden` — `overflow-x: hidden` turns the page
+     into a scroll container and breaks `position: sticky` (the SkyReveal
+     and Cinematic pins). `clip` clips the same way without that side effect. */
+  html,
+  body {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  /* Media never spills past its box, whatever the container ratio */
+  img,
+  video,
+  svg {
+    max-width: 100%;
+  }
+
   ::selection {
     @apply bg-moss/20 text-forest;
   }

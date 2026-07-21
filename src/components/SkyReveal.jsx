@@ -108,10 +108,12 @@ export default function SkyReveal() {
   };
 
   return (
-    // Taller track + sticky stage: the film stays pinned fullscreen while
-    // ~1.5 viewports of scroll pass through — a natural "hold" that gives
-    // people time to watch, without ever taking control of their scroll.
-    <section ref={sectionRef} className="relative h-[250vh] bg-ink">
+    // Gentle pinned hold: the film stays fullscreen for ~1 extra viewport
+    // of scroll — long enough to watch the full reveal play through, but
+    // short enough that it never feels like the scroll is being seized.
+    // The visitor keeps scrolling the whole time; the section simply holds
+    // briefly, then releases.
+    <section ref={sectionRef} className="relative h-[200vh] bg-ink">
       <div className="sticky top-0 h-svh overflow-hidden">
         {/* Poster fallback behind the film — never a black frame */}
         <img
@@ -208,7 +210,7 @@ export default function SkyReveal() {
           }`}
         />
         <div
-          className={`absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-6 pb-16 text-center transition-all duration-700 sm:px-10 sm:pb-20 ${
+          className={`absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-6 pb-16 text-center transition-all duration-700 sm:px-10 sm:pb-20 [@media(max-height:680px)]:pb-8 ${
             showFinal || reduced
               ? "translate-y-0 opacity-100"
               : "translate-y-6 opacity-0"
@@ -217,7 +219,7 @@ export default function SkyReveal() {
           <span className="eyebrow !text-goldsoft">
             From Orbit to Attappadi
           </span>
-          <h2 className="font-display text-3xl font-light text-paper sm:text-4xl md:text-5xl">
+          <h2 className="font-display text-3xl font-light text-paper sm:text-4xl md:text-5xl [@media(max-height:680px)]:!text-2xl">
             The Masterplan, Unveiled
           </h2>
           <p className="mt-4 text-sm font-light leading-relaxed text-paper/75 sm:text-base">

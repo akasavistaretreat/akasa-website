@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import { scrollToId } from "./shared/Motion.jsx";
 import { videoSrc } from "./shared/media.js";
 import { site } from "../data/site.js";
@@ -34,62 +34,35 @@ export default function Hero() {
     return () => io.disconnect();
   }, []);
 
-  // Progress through the tall hero section (0 at top, 1 when scrolled past)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Spring-smoothed progress — visual transforms ease toward the scroll
-  // position instead of snapping to it, so fast flicks stay fluid
-  const smooth = useSpring(scrollYProgress, {
-    stiffness: 110,
-    damping: 30,
-    mass: 0.4,
-    restDelta: 0.001,
-  });
-
-  // Content gently lifts and fades as the visitor scrolls deeper —
-  // held longer (to 0.9) so there is no empty stretch before the reveal
-  const contentOpacity = useTransform(smooth, [0, 0.55, 0.9], [1, 1, 0]);
-  const contentY = useTransform(smooth, [0, 0.9], [0, -60]);
-  const hintOpacity = useTransform(smooth, [0, 0.12], [1, 0]);
-  // Night veil: the hero darkens to sky at its end, and SkyReveal opens
-  // in space — one continuous "leave the valley, see the Earth" move
-  const veilOpacity = useTransform(smooth, [0.85, 1], [0, 1]);
-
   return (
-    <section ref={sectionRef} className="relative h-[150vh] bg-forest">
-      {/* Pinned viewport — stays fixed while the section scrolls beneath */}
-      <div className="sticky top-0 flex h-svh flex-col justify-end overflow-hidden">
-        {/* Background video: slow ambient loop — plays on the media pipeline,
-            costs nothing while scrolling (scrubbing is reserved for the
-            pinned showcase sections) */}
-        <video
-          ref={videoRef}
-          className="absolute inset-0 h-full w-full scale-[1.04] object-cover opacity-60"
-          muted
-          playsInline
-          preload="auto"
-          poster="/images/hero-valley.jpg"
-          autoPlay
-          loop
-        >
-          <source src={videoSrc("hero-valley")} type="video/mp4" />
-        </video>
-        {/* Soft charcoal wash for legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/20 to-ink/70" />
-        {/* Night veil — darkens at the end of the hero and hands off to
-            SkyReveal's opening shot of Earth from space */}
-        <motion.div
-          style={{ opacity: veilOpacity }}
-          className="pointer-events-none absolute inset-0 bg-ink"
-        />
+    // Clean single-screen hero — no tall pinned scroll zone, so there is
+    // never an empty stretch of video after the content. The next section
+    // begins immediately below.
+    <section
+      ref={sectionRef}
+      className="relative h-svh min-h-[600px] overflow-hidden bg-forest"
+    >
+      {/* Background video: slow ambient loop */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 h-full w-full scale-[1.04] object-cover opacity-60"
+        muted
+        playsInline
+        preload="auto"
+        poster="/images/hero-valley.jpg"
+        autoPlay
+        loop
+      >
+        <source src={videoSrc("hero-valley")} type="video/mp4" />
+      </video>
+      {/* Soft charcoal wash for legibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/20 to-ink/70" />
 
-        <motion.div
-          style={{ opacity: contentOpacity, y: contentY }}
-          className="relative mx-auto w-full max-w-6xl px-6 pb-12 pt-28 sm:px-10 sm:pb-16 sm:pt-40"
-        >
+      {/* Content column — anchored to the bottom on tall screens, and to the
+          top on small / short screens so the heading never slides under the
+          fixed navbar. */}
+      <div className="relative flex h-full flex-col justify-end overflow-hidden max-md:justify-start [@media(max-height:740px)]:justify-start">
+        <div className="relative mx-auto w-full max-w-6xl px-6 pb-12 pt-28 sm:px-10 sm:pb-16 sm:pt-40 [@media(max-height:820px)]:!pt-24 [@media(max-height:820px)]:!pb-8 [@media(max-height:680px)]:!pt-24 [@media(max-height:680px)]:!pb-6">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -103,7 +76,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-3xl font-display text-4xl font-light leading-[1.15] text-paper sm:text-6xl md:text-7xl"
+            className="max-w-3xl font-display text-4xl font-light leading-[1.15] text-paper sm:text-6xl md:text-7xl [@media(max-height:820px)]:!text-5xl [@media(max-height:680px)]:!text-4xl"
           >
             Own a Slice of Paradise in the Luxury Hill-Top Retreat
           </motion.h1>
@@ -156,7 +129,7 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.9 } } }}
-            className="-mx-6 mt-8 flex gap-2.5 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-14 sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 lg:grid-cols-6"
+            className="-mx-6 mt-8 flex gap-2.5 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-14 sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 lg:grid-cols-6 [@media(max-height:820px)]:!mt-6 [@media(max-height:680px)]:!mt-4"
           >
             {highlights.map((h) => (
               <motion.div
@@ -177,16 +150,18 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.6 }}
-            className="mt-5 text-[11px] font-light text-paper/50 sm:mt-8"
+            className="mt-5 text-[11px] font-light text-paper/50 sm:mt-8 [@media(max-height:820px)]:!mt-4 [@media(max-height:680px)]:!mt-3"
           >
             Resort under active development. Details subject to approvals and development timelines.
           </motion.p>
-        </motion.div>
+        </div>
 
-        {/* Scroll hint */}
+        {/* Scroll hint — hidden on short screens where it would crowd the content */}
         <motion.div
-          style={{ opacity: hintOpacity }}
-          className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.4 }}
+          className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 [@media(max-height:760px)]:hidden"
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
