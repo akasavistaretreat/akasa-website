@@ -46,7 +46,7 @@ export default function FAQ() {
         <SectionHeading
           eyebrow="Questions"
           title="Asked, answered, honestly"
-          lead="Clear answers about what you're buying today and what remains a planned vision."
+          lead="Clear answers about what you're buying today and the resort taking shape around it."
         />
 
         <FadeUp delay={0.1}>

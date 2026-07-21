@@ -40,11 +40,11 @@ const STAGES = [
     eyebrow: "Attappadi · Agali · Kerala",
     line: "11.07° N · 76.62° E — a valley held by the hills.",
     from: 9.0,
-    to: 11.2,
+    to: 10.8,
   },
 ];
 
-const FINAL_FROM = 12.2;
+const FINAL_FROM = 12.4;
 
 export default function SkyReveal() {
   const sectionRef = useRef(null);
@@ -54,6 +54,7 @@ export default function SkyReveal() {
   const [loadVideo, setLoadVideo] = useState(false);
   const [stage, setStage] = useState(-1); // index into STAGES, -1 = none
   const [showFinal, setShowFinal] = useState(false);
+  const [showStill, setShowStill] = useState(false); // crossfade to the hi-res still at the end
 
   // Lazy-load the film shortly before the section scrolls into view,
   // then play/pause with visibility
@@ -133,11 +134,23 @@ export default function SkyReveal() {
             onEnded={() => {
               setStage(-1);
               setShowFinal(true);
+              setShowStill(true);
             }}
           >
             <source src={videoSrc("earth-zoom")} type="video/mp4" />
           </video>
         )}
+
+        {/* Cinematic hi-res still — crossfades in over the video's last
+            frame once the film ends, so the section resolves on the
+            photoreal masterplan rather than the rendered frame */}
+        <img
+          src="/images/masterplan-aerial.jpg"
+          alt="Aerial view of the AKASA Valley Retreat masterplan"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ease-out ${
+            showStill || reduced ? "opacity-100" : "opacity-0"
+          }`}
+        />
 
         {/* Vignette — keeps the frame premium, focuses the centre */}
         <div
@@ -208,7 +221,7 @@ export default function SkyReveal() {
             The Masterplan, Unveiled
           </h2>
           <p className="mt-4 text-sm font-light leading-relaxed text-paper/75 sm:text-base">
-            The planned future resort vision at AKASA Valley Retreat — cottages, pools
+            The resort taking shape at AKASA Valley Retreat — themed cottages, pools
             and shared amenities as currently envisioned.
           </p>
           <p className="mt-2 text-[11px] font-light uppercase tracking-widest2 text-paper/45">

@@ -1,26 +1,26 @@
 export const benefits = [
   {
     title: "Early-Entry Opportunity",
-    text: "Enter at the plot stage of a planned future resort destination — before the resort phase takes shape. Subject to approvals and development timelines.",
+    text: "Enter at the plot stage of a star-rated resort destination in the making — before the resort takes shape around you.",
   },
   {
     title: "Limited Lot Availability",
-    text: "Only 40 lots in the entire development — 20 already sold. A naturally limited, low-density community.",
+    text: "Only 39 lots in the entire development — 24 already taken. A naturally limited, low-density hill-top community.",
   },
   {
     title: "Visible, Verifiable Progress",
     text: "Land acquired, DTP approvals received, and site preparation underway. Progress you can visit and see for yourself.",
   },
   {
-    title: "Planned Resort Ecosystem",
-    text: "Your plot sits within a planned future resort vision — wellness, dining, and hospitality amenities planned around the lots.",
+    title: "Resort Ecosystem",
+    text: "Your plot sits within a full resort under development — wellness, dining and hospitality amenities built around the lots.",
   },
   {
     title: "Nature-Led Location",
-    text: "Attappadi's valley climate, hills and rivers offer a setting that cannot be manufactured — a genuine retreat landscape.",
+    text: "Attappadi's valley climate, hills and rivers offer a setting that cannot be manufactured. The property is located adjacent to the sweet Siruvani river, which flows even during hot summers.",
   },
   {
-    title: "Future Potential",
-    text: "Eco-tourism and wellness travel in Kerala continue to grow. The planned resort phase aims to place this valley on that map.",
+    title: "Revenue Potential",
+    text: "Build a cottage on your plot, enjoy your vacations, and tie up with the resort for revenue sharing during unoccupied days.",
   },
 ];

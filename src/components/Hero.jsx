@@ -96,7 +96,7 @@ export default function Hero() {
             transition={{ duration: 1.2, delay: 0.2 }}
             className="mb-5 text-xs font-medium uppercase tracking-widest2 text-goldsoft"
           >
-            Attappadi · Agali · Kerala — Phase 1 Plot Offering
+            Attappadi · Agali · Kerala — Plots & Villa Plots
           </motion.p>
 
           <motion.h1
@@ -105,7 +105,7 @@ export default function Hero() {
             transition={{ duration: 1.1, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-3xl font-display text-4xl font-light leading-[1.15] text-paper sm:text-6xl md:text-7xl"
           >
-            Own a Plot in a Future Luxury Valley Retreat
+            Own a Slice of Paradise in the Luxury Hill-Top Retreat
           </motion.h1>
 
           <motion.p
@@ -114,8 +114,17 @@ export default function Hero() {
             transition={{ duration: 1, delay: 0.55 }}
             className="mt-4 max-w-xl text-sm font-light leading-relaxed text-paper/80 sm:mt-6 sm:text-base"
           >
-            AKASA Valley Retreat is a nature-led investment opportunity in Attappadi, planned
-            around wellness, luxury villas, eco-tourism, and future resort hospitality.
+            AKASA Valley Retreat is a nature-led investment opportunity in Attappadi, built
+            around wellness, luxury villas, eco-tourism, and star-class resort hospitality.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.65 }}
+            className="mt-3 text-xs font-medium uppercase tracking-widest2 text-goldsoft sm:mt-4 sm:text-sm"
+          >
+            Near Coimbatore, Anaikatti · By the Siruvani River
           </motion.p>
 
           <motion.div
@@ -170,7 +179,7 @@ export default function Hero() {
             transition={{ duration: 1, delay: 1.6 }}
             className="mt-5 text-[11px] font-light text-paper/50 sm:mt-8"
           >
-            Planned future resort vision. Subject to approvals and development timelines.
+            Resort under active development. Details subject to approvals and development timelines.
           </motion.p>
         </motion.div>
 

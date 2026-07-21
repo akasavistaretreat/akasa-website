@@ -55,7 +55,7 @@ export const timeline = [
     title: "Cottages & Resort Construction",
     date: "Planned",
     status: "planned",
-    detail: "Phased construction of cottages and resort facilities, subject to approvals.",
+    detail: "Construction of cottages and resort facilities, subject to approvals.",
   },
   {
     level: 9,

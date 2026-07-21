@@ -8,9 +8,9 @@ export default function Typologies() {
     <section id="typologies" className="section bg-paper">
       <div className="section-inner">
         <SectionHeading
-          eyebrow="Phase 2 Concept"
-          title="Planned Future Resort Typologies"
-          lead="Three cottage typologies planned for the future resort phase. These are planned designs — not available rooms — and remain subject to approvals and development timelines."
+          eyebrow="The Cottages"
+          title="Themed Cottages"
+          lead="Three themed cottage designs — built for consistency across the retreat and maintained to top-class resort standards."
         />
 
         <motion.div
@@ -30,12 +30,12 @@ export default function Typologies() {
                 <Parallax speed={0.08} className="h-full">
                   <img
                     src={t.image}
-                    alt={`${t.name} — planned typology`}
+                    alt={`${t.name} — themed cottage`}
                     className="h-[115%] w-full -translate-y-[7%] object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-105"
                   />
                 </Parallax>
                 <span className="absolute left-4 top-4 rounded-full bg-ink/60 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-paper backdrop-blur-sm">
-                  Planned Typology
+                  Themed Cottage
                 </span>
               </div>
 

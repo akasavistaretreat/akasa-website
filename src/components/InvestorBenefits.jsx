@@ -9,7 +9,7 @@ export default function InvestorBenefits() {
         <SectionHeading
           eyebrow="For Investors"
           title="Why enter now"
-          lead="A clear-eyed case for early entry — grounded in land, progress and scarcity, not promises. No returns are guaranteed."
+          lead="Enter now to capture limited hill-top plots at attractive prices. Unlike other projects, AKASA is already under construction to establish itself as a fully functional star-rated resort in the heart of Agali, amidst all tourist attractions."
         />
 
         <motion.div

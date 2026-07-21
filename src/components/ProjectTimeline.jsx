@@ -37,7 +37,8 @@ const CheckIcon = () => (
 
 export default function ProjectTimeline() {
   const currentIndex = timeline.findIndex((t) => t.status === "current");
-  const progressPct = ((currentIndex + 1) / timeline.length) * 100;
+  // Overall completion figure communicated by the promoters
+  const progressPct = 60;
   const remaining = timeline.length - (currentIndex + 1);
 
   return (
@@ -45,8 +46,8 @@ export default function ProjectTimeline() {
       <div className="section-inner">
         <SectionHeading
           eyebrow="Progress You Can Verify"
-          title="Nine levels. We are at Level 6."
-          lead="Five levels complete, ground work underway. Every stage below can be verified on a site visit. Future stages are subject to approvals and development timelines."
+          title="Project is now 60% complete."
+          lead="Five of nine levels complete and ground work underway at Level 6. Every stage below can be verified on a site visit."
         />
 
         {/* Overall progress meter */}
@@ -67,7 +68,7 @@ export default function ProjectTimeline() {
               </div>
               <div className="text-left sm:text-right">
                 <p className="font-display text-3xl font-light text-gold sm:text-4xl">
-                  {Math.round(progressPct)}%
+                  {progressPct}%
                 </p>
                 <p className="mt-0.5 text-xs uppercase tracking-widest2 text-charcoal/50">
                   {remaining} {remaining === 1 ? "stage" : "stages"} to resort launch

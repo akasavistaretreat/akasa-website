@@ -23,10 +23,9 @@ export default function Footer() {
         </div>
 
         <p className="mt-10 max-w-3xl border-t border-paper/10 pt-6 text-[11px] font-light leading-relaxed text-paper/40">
-          Disclaimer: AKASA Valley Retreat is a plot development with a planned future
-          resort vision. The resort, cottages and amenities shown are planned and are not
-          yet built or operational. All timelines, designs and amenities are indicative
-          and subject to approvals and development timelines. Nothing on this website
+          Disclaimer: AKASA Valley Retreat is a plot development within a resort project
+          under development. All timelines, designs and amenities are indicative and
+          subject to approvals and development timelines. Nothing on this website
           constitutes a guarantee of investment returns. Please verify all details and
           documentation before making any purchase decision.
         </p>

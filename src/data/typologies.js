@@ -1,5 +1,4 @@
-// Planned Future Resort Typologies — part of the planned resort vision,
-// subject to approvals and development timelines. Not available rooms.
+// Themed Cottages — consistent designs maintained to top-class resort standards.
 export const typologies = [
   {
     id: "pool-villa",

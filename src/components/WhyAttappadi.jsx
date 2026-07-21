@@ -13,8 +13,8 @@ export default function WhyAttappadi() {
           </h2>
           <p className="mt-6 text-base font-light leading-relaxed text-paper/70">
             Some places cannot be replicated. Attappadi is a valley held between mountain
-            ranges — quiet, green, and still largely untouched. That is the land AKASA is
-            built on.
+            ranges — quiet, green, and still largely untouched. AKASA sits on a hill-top
+            within it, with 270° views from every site and the Siruvani river a walk away.
           </p>
         </div>
 

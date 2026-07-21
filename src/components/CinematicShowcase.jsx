@@ -135,30 +135,30 @@ export default function CinematicShowcase() {
         <Beat
           progress={smooth}
           range={[0.06, 0.3]}
-          eyebrow="Planned Future Resort"
+          eyebrow="The Resort"
           title="Designed around stillness."
-          copy="A planned valley retreat of pool villas, suites and cottages — shaped by the contours of Attappadi itself."
+          copy="A valley retreat of pool villas, suites and themed cottages — shaped by the contours of Attappadi itself."
         />
         <Beat
           progress={smooth}
           range={[0.3, 0.5]}
-          eyebrow="Pool Villa — Planned Typology"
+          eyebrow="Pool Villa — Themed Cottage"
           title="1,230 sq.ft of private calm."
-          copy="Two bedrooms, a private pool and an outdoor deck facing the hills. An artist's impression of the planned design."
+          copy="Two bedrooms, a private pool and an outdoor deck facing the hills. An artist's impression of the design."
         />
         <Beat
           progress={smooth}
           range={[0.54, 0.78]}
-          eyebrow="Suites & Cottages — Planned Typologies"
+          eyebrow="Suites & Cottages — Themed Designs"
           title="Every window, a valley."
-          copy="Suite rooms with private jacuzzis and studio cottages with quiet sit-outs — planned for couples, families and solo travellers."
+          copy="Suite rooms with private jacuzzis and studio cottages with quiet sit-outs — designed for couples, families and solo travellers."
         />
         <Beat
           progress={smooth}
           range={[0.78, 0.97]}
-          eyebrow="Subject to Approvals & Development Timelines"
+          eyebrow="Limited Hill-Top Plots"
           title="Own the land beneath it."
-          copy="Phase 1 is the plot. The planned resort vision is the future it sits inside. 20 of 40 lots remain."
+          copy="The plot is your entry. The resort rising around it is the future it sits inside. 15 of 39 lots remain."
         />
       </div>
     </section>
