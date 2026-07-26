@@ -35,12 +35,15 @@ export default function Hero() {
   }, []);
 
   return (
-    // Clean single-screen hero — no tall pinned scroll zone, so there is
-    // never an empty stretch of video after the content. The next section
-    // begins immediately below.
+    // Fluid, self-fitting hero — no height breakpoints, so it behaves the
+    // same on every aspect ratio. `min-h-svh` + `my-auto` centres the
+    // content when it fits and lets it flow/grow when it doesn't (never
+    // clipping or overlapping). The top padding always clears the fixed
+    // navbar, and the heading scales with clamp() instead of snapping at
+    // breakpoints.
     <section
       ref={sectionRef}
-      className="relative h-svh min-h-[600px] overflow-hidden bg-forest"
+      className="relative flex min-h-svh flex-col overflow-hidden bg-forest"
     >
       {/* Background video: slow ambient loop */}
       <video
@@ -58,11 +61,10 @@ export default function Hero() {
       {/* Soft charcoal wash for legibility */}
       <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/20 to-ink/70" />
 
-      {/* Content column — anchored to the bottom on tall screens, and to the
-          top on small / short screens so the heading never slides under the
-          fixed navbar. */}
-      <div className="relative flex h-full flex-col justify-end overflow-hidden max-md:justify-start [@media(max-height:740px)]:justify-start">
-        <div className="relative mx-auto w-full max-w-6xl px-6 pb-12 pt-28 sm:px-10 sm:pb-16 sm:pt-40 [@media(max-height:820px)]:!pt-24 [@media(max-height:820px)]:!pb-8 [@media(max-height:680px)]:!pt-24 [@media(max-height:680px)]:!pb-6">
+      {/* Content — vertically auto-centred (balanced on tall screens), with a
+          top pad that always clears the navbar. When content is taller than
+          the screen the auto margins collapse and it simply flows down. */}
+      <div className="relative my-auto mx-auto w-full max-w-6xl px-6 pb-16 pt-28 sm:px-10 sm:pb-20 sm:pt-32">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -76,7 +78,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-3xl font-display text-4xl font-light leading-[1.15] text-paper sm:text-6xl md:text-7xl [@media(max-height:820px)]:!text-5xl [@media(max-height:680px)]:!text-4xl"
+            className="max-w-3xl font-display text-[clamp(2rem,5.2vw,4.5rem)] font-light leading-[1.12] text-paper"
           >
             Own a Slice of Paradise in the Luxury Hill-Top Retreat
           </motion.h1>
@@ -129,7 +131,7 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.9 } } }}
-            className="-mx-6 mt-8 flex gap-2.5 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-14 sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 lg:grid-cols-6 [@media(max-height:820px)]:!mt-6 [@media(max-height:680px)]:!mt-4"
+            className="-mx-6 mt-8 flex gap-2.5 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-12 sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 lg:grid-cols-6"
           >
             {highlights.map((h) => (
               <motion.div
@@ -150,28 +152,27 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.6 }}
-            className="mt-5 text-[11px] font-light text-paper/50 sm:mt-8 [@media(max-height:820px)]:!mt-4 [@media(max-height:680px)]:!mt-3"
+            className="mt-5 text-[11px] font-light text-paper/50 sm:mt-8"
           >
             Resort under active development. Details subject to approvals and development timelines.
           </motion.p>
         </div>
 
-        {/* Scroll hint — hidden on short screens where it would crowd the content */}
+      {/* Scroll hint — sits at the very bottom of the hero */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.4 }}
+        className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2"
+      >
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.4 }}
-          className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 [@media(max-height:760px)]:hidden"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="flex h-9 w-6 items-start justify-center rounded-full border border-paper/40 pt-1.5"
         >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="flex h-9 w-6 items-start justify-center rounded-full border border-paper/40 pt-1.5"
-          >
-            <div className="h-2 w-1 rounded-full bg-goldsoft" />
-          </motion.div>
+          <div className="h-2 w-1 rounded-full bg-goldsoft" />
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
