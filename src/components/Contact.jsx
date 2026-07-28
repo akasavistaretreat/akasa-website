@@ -8,11 +8,24 @@ import { site, whatsappUrl } from "../data/site.js";
 const inputCls =
   "w-full min-w-0 rounded-xl border border-sand bg-white/80 px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/35 outline-none transition focus:border-gold/60 focus:ring-2 focus:ring-gold/15";
 
-// iOS Safari ignores width on a native date input and centres its value.
-// appearance-none drops the native chrome so w-full is respected, and the
-// ::-webkit-date-and-time-value rules pull the text back to the left so it
-// lines up with the placeholder in every other field.
-const dateCls = `${inputCls} appearance-none bg-none text-left [&::-webkit-calendar-picker-indicator]:opacity-50 [&::-webkit-date-and-time-value]:m-0 [&::-webkit-date-and-time-value]:text-left`;
+// A native date input needs a fair amount of taming:
+//   · iOS ignores width on it and centres its value — appearance-none plus the
+//     ::-webkit-date-and-time-value rules restore normal left-aligned layout.
+//   · While unset it renders as a blank box on iOS: no icon, no format hint,
+//     nothing to say it's a date. So we draw our own placeholder and calendar
+//     icon, and blank the native text only while the field is empty AND
+//     unfocused — keeping it visible on desktop, where you can type into it.
+//   · The webkit picker indicator is stretched invisibly over the icon so the
+//     whole right-hand area stays the native click target for the picker.
+const dateCls = [
+  inputCls,
+  "relative appearance-none bg-none pr-11 text-left",
+  "[&::-webkit-date-and-time-value]:m-0 [&::-webkit-date-and-time-value]:text-left",
+  "[&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-y-0",
+  "[&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:h-full",
+  "[&::-webkit-calendar-picker-indicator]:w-11 [&::-webkit-calendar-picker-indicator]:cursor-pointer",
+  "[&::-webkit-calendar-picker-indicator]:opacity-0",
+].join(" ");
 
 const fieldLabelCls = "mb-1.5 block text-[11px] font-light tracking-wide text-charcoal/50";
 
@@ -167,13 +180,34 @@ export default function Contact() {
               </label>
               <label className="block">
                 <span className={fieldLabelCls}>Preferred Site Visit Date</span>
-                <input
-                  type="date"
-                  min={new Date().toISOString().slice(0, 10)}
-                  value={form.visitDate}
-                  onChange={set("visitDate")}
-                  className={dateCls}
-                />
+                <div className="relative">
+                  <input
+                    type="date"
+                    min={new Date().toISOString().slice(0, 10)}
+                    value={form.visitDate}
+                    onChange={set("visitDate")}
+                    className={`peer ${dateCls} ${
+                      form.visitDate ? "" : "[&:not(:focus)]:text-transparent"
+                    }`}
+                  />
+                  {!form.visitDate && (
+                    <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-sm font-light text-charcoal/35 peer-focus:opacity-0">
+                      Select a date
+                    </span>
+                  )}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal/40"
+                  >
+                    <rect x="3" y="5" width="18" height="16" rx="2.5" />
+                    <path d="M3 10h18M8 3v4M16 3v4" />
+                  </svg>
+                </div>
               </label>
             </div>
             <textarea
