@@ -10,6 +10,10 @@ export const site = {
   whatsappMessage:
     "Hi, I am interested in AKASA Valley Retreat. Please share available plot details and site visit information.",
   brochurePath: "/brochure/Akasa_Brochure.pdf",
+  social: {
+    instagram: "https://www.instagram.com/akasa_valley_retreat",
+    instagramHandle: "@akasa_valley_retreat",
+  },
   facts: {
     totalLots: 39,
     sold: 24,

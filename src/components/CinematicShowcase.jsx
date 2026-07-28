@@ -7,7 +7,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { useVideoScrub } from "./shared/ScrollFx.jsx";
-import { videoSrc } from "./shared/media.js";
+import { useVideoSrc } from "./shared/media.js";
 
 /**
  * CinematicShowcase — Apple-style pinned film moment.
@@ -75,6 +75,9 @@ export default function CinematicShowcase() {
   const villaScale = useTransform(smooth, [0, 0.5], reduced ? [1, 1] : [1.06, 1]);
   const cottageScale = useTransform(smooth, [0.5, 1], reduced ? [1, 1] : [1.06, 1]);
 
+  const villaSrc = useVideoSrc("pool-villa");
+  const cottageSrc = useVideoSrc("cottage-glide");
+
   const videoProps = {
     muted: true,
     playsInline: true,
@@ -98,11 +101,12 @@ export default function CinematicShowcase() {
           />
           <video
             ref={villaRef}
+            key={villaSrc}
             poster="/images/pool-villa.jpg"
             className="relative h-full w-full object-cover"
             {...videoProps}
           >
-            <source src={videoSrc("pool-villa")} type="video/mp4" />
+            <source src={villaSrc} type="video/mp4" />
           </video>
         </motion.div>
 
@@ -119,11 +123,12 @@ export default function CinematicShowcase() {
           />
           <video
             ref={cottageRef}
+            key={cottageSrc}
             poster="/images/suite-room.jpg"
             className="relative h-full w-full object-cover"
             {...videoProps}
           >
-            <source src={videoSrc("cottage-glide")} type="video/mp4" />
+            <source src={cottageSrc} type="video/mp4" />
           </video>
         </motion.div>
 

@@ -71,14 +71,16 @@ function noteFor(n, status) {
 export const lots = Object.keys(AREAS).map((k) => {
   const n = Number(k);
   const [sqm, cents] = AREAS[n];
-  const status = AVAILABLE.has(n) ? "available" : "sold";
+  // A25 is not a sellable plot — it is earmarked for the planned
+  // Ayurvedic Wellness Centre, so it carries its own "wellness" status.
+  const status = n === 25 ? "wellness" : AVAILABLE.has(n) ? "available" : "sold";
   return {
     id: n,
     number: `A${n}`,
     status,
     sqm,
     cents,
-    type: typeOf(sqm),
+    type: n === 25 ? "Ayurvedic Wellness Centre" : typeOf(sqm),
     view: zone(n),
     notes: noteFor(n, status),
   };
@@ -89,10 +91,12 @@ export const lotStats = {
   sold: lots.filter((l) => l.status === "sold").length,
   available: lots.filter((l) => l.status === "available").length,
   reserved: lots.filter((l) => l.status === "reserved").length,
+  wellness: lots.filter((l) => l.status === "wellness").length,
 };
 
 export const statusMeta = {
   available: { label: "Available", dot: "bg-gold", ring: "ring-gold/40", text: "text-gold" },
   sold: { label: "Sold", dot: "bg-stone", ring: "ring-stone/40", text: "text-stone" },
   reserved: { label: "Reserved", dot: "bg-amber-500", ring: "ring-amber-400/40", text: "text-amber-600" },
+  wellness: { label: "Wellness (Ayurvedic) Centre", dot: "bg-moss", ring: "ring-moss/40", text: "text-moss" },
 };

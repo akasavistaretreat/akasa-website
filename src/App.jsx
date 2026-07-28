@@ -44,13 +44,13 @@ export default function App() {
       <Hero />
       <SkyReveal />
       <LotSummary />
+      <CinematicShowcase />
       <Typologies />
       <InteractiveMasterplan />
       <ProjectTimeline />
       <WhyAttappadi />
       <InvestorBenefits />
       <FutureVision />
-      <CinematicShowcase />
       <Amenities />
       <Gallery />
       <FAQ />

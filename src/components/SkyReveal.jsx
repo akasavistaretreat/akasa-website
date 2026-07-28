@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { videoSrc } from "./shared/media.js";
+import { useVideoSrc } from "./shared/media.js";
 
 /**
  * SkyReveal — the Earth dive, as a self-playing film.
@@ -50,6 +50,7 @@ export default function SkyReveal() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
   const reduced = useReducedMotion();
+  const skySrc = useVideoSrc("earth-zoom");
 
   const [loadVideo, setLoadVideo] = useState(false);
   const [stage, setStage] = useState(-1); // index into STAGES, -1 = none
@@ -127,6 +128,7 @@ export default function SkyReveal() {
         {loadVideo && !reduced && (
           <video
             ref={videoRef}
+            key={skySrc}
             className="relative h-full w-full object-cover"
             muted
             playsInline
@@ -139,7 +141,7 @@ export default function SkyReveal() {
               setShowStill(true);
             }}
           >
-            <source src={videoSrc("earth-zoom")} type="video/mp4" />
+            <source src={skySrc} type="video/mp4" />
           </video>
         )}
 

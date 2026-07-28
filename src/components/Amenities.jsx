@@ -76,7 +76,7 @@ const AmenityIcon = ({ name }) => (
 
 export default function Amenities() {
   return (
-    <section id="amenities" className="section bg-linen">
+    <section id="amenities" className="section bg-paper">
       <div className="section-inner">
         <SectionHeading
           eyebrow="Resort Amenities"

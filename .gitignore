@@ -7,3 +7,6 @@ download-assets.sh
 _real_photos
 download-masterplan-4k.sh
 update-earth-zoom.sh
+
+# local backups of the pre-reframe centre-crop videos — safe to delete
+*-oldcrop.mp4

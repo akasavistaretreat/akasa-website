@@ -16,6 +16,7 @@ const FILL = {
   available: { base: "#B49B5E", hover: "#9c8449", text: "#FFFFFF" },
   sold: { base: "#A9A398", hover: "#948E82", text: "#FFFFFF" },
   reserved: { base: "#D97706", hover: "#B45309", text: "#FFFFFF" },
+  wellness: { base: "#5E7351", hover: "#4C5E42", text: "#FFFFFF" },
 };
 
 const MIN_ZOOM = 1;
@@ -32,6 +33,9 @@ function Legend() {
       </span>
       <span className="flex items-center gap-2">
         <i className="h-3 w-3 rounded-full bg-amber-500" /> Reserved / In discussion
+      </span>
+      <span className="flex items-center gap-2">
+        <i className="h-3 w-3 rounded-full bg-[#5E7351]" /> Wellness (Ayurvedic) Centre
       </span>
       <span className="hidden items-center gap-2 sm:flex">
         <i className="h-3 w-3 rounded-sm bg-[#DCE0CB]" /> Resort &amp; recreation greens
@@ -95,7 +99,17 @@ function LotPanel({ lot, onClose }) {
         </dl>
       </div>
 
-      {lot.status !== "sold" ? (
+      {lot.status === "wellness" ? (
+        <button
+          onClick={() => {
+            onClose();
+            scrollToId("contact");
+          }}
+          className="btn-outline mt-8 w-full"
+        >
+          Enquire About the Retreat
+        </button>
+      ) : lot.status !== "sold" ? (
         <button
           onClick={() => {
             onClose();
@@ -358,17 +372,11 @@ export default function InteractiveMasterplan() {
                       <path d="M-3 -3.2 L3 -3.2 L3 0.6 L-3 0.6 Z" fill="#B49B5E" stroke="#8A7360" strokeWidth="0.45" />
                       <path d="M-4.4 -3.2 L0 -7.6 L4.4 -3.2 Z" fill="#8A7360" />
                       <path d="M-3 0.6 L-4.6 6 M3 0.6 L4.6 6 M-3.9 3.4 L3.9 3.4" stroke="#8A7360" strokeWidth="0.5" fill="none" />
-                      {/* label pill — kept clear of the ring and the site edge */}
-                      <g transform="translate(-14 16)">
-                        <rect x="-17" y="-3.6" width="34" height="7.2" rx="3.6" fill="#F7F4EE" opacity="0.92" stroke="#B49B5E" strokeWidth="0.4" />
-                        <text y="1.6" textAnchor="middle" fontSize="4.4" fontWeight="700" letterSpacing="0.08em" fill="#2B2B27" fontFamily="Karla, system-ui, sans-serif">
-                          WATCHTOWER
-                        </text>
-                      </g>
+                      {/* label pill rendered on the top overlay layer for legibility */}
                     </g>
 
                     {/* Security gate — guard hut with boom barrier, inside the garden by the entrance */}
-                    <g transform="translate(325 500)">
+                    <g transform="translate(353 504)">
                       {/* guard hut */}
                       <rect x="-10" y="-3.8" width="8.6" height="7.6" rx="1" fill="#C9A97D" stroke="#8A7360" strokeWidth="0.6" />
                       <path d="M-11.2 -3.8 L-5.7 -7.2 L-0.2 -3.8 Z" fill="#8A7360" />
@@ -378,17 +386,11 @@ export default function InteractiveMasterplan() {
                       <line x1="2.2" y1="-1.4" x2="16.5" y2="-1.4" stroke="#F7F4EE" strokeWidth="2" strokeLinecap="round" />
                       <line x1="2.2" y1="-1.4" x2="16.5" y2="-1.4" stroke="#B49B5E" strokeWidth="2" strokeLinecap="round" strokeDasharray="2.6 2.6" />
                       <circle cx="16.5" cy="-1.4" r="1" fill="#8A7360" />
-                      {/* label pill */}
-                      <g transform="translate(-2 10)">
-                        <rect x="-14" y="-3.6" width="28" height="7.2" rx="3.6" fill="#F7F4EE" opacity="0.92" stroke="#B49B5E" strokeWidth="0.4" />
-                        <text y="1.6" textAnchor="middle" fontSize="4.4" fontWeight="700" letterSpacing="0.08em" fill="#2B2B27" fontFamily="Karla, system-ui, sans-serif">
-                          SECURITY
-                        </text>
-                      </g>
+                      {/* label pill rendered on the top overlay layer for legibility */}
                     </g>
 
                     {/* Entrance marker at the boundary gap */}
-                    <text x="383" y="542" textAnchor="middle" fontSize="4" letterSpacing="0.14em" fill="#8A7360" fontFamily="Karla, system-ui, sans-serif">
+                    <text x="360" y="520" textAnchor="middle" fontSize="4" letterSpacing="0.14em" fill="#8A7360" fontFamily="Karla, system-ui, sans-serif">
                       ENTRANCE
                     </text>
                   </g>
@@ -467,13 +469,45 @@ export default function InteractiveMasterplan() {
                 ))}
 
                 {/* Entry + compass */}
-                <text x="382" y="552" textAnchor="middle" fontSize="6" fill="#8A7360" style={{ pointerEvents: "none", fontFamily: "Karla, system-ui, sans-serif" }}>
-                  ⌄ Entry — Agali / Kadambara road
+                <text x="360" y="530" textAnchor="middle" fontSize="6" fill="#8A7360" style={{ pointerEvents: "none", fontFamily: "Karla, system-ui, sans-serif" }}>
+                  Entry — Agali / Kadambara road
                 </text>
                 <g transform="translate(78 80)" opacity="0.7" style={{ pointerEvents: "none" }}>
                   <circle r="10" fill="none" stroke="#8A7360" strokeWidth="0.8" />
                   <path d="M0 6 L0 -6 M0 -6 l-2.6 3.4 M0 -6 l2.6 3.4" stroke="#8A7360" strokeWidth="1" fill="none" />
                   <text y="-13" textAnchor="middle" fontSize="6" fill="#8A7360" fontFamily="Karla, system-ui, sans-serif">N</text>
+                </g>
+
+                {/* Top overlay layer — feature labels always sit above lots, roads & boundary */}
+                <g style={{ pointerEvents: "none" }}>
+                  {[
+                    { x: 714, y: 112, w: 34, label: "WATCHTOWER" },
+                    { x: 327, y: 505, w: 28, label: "SECURITY" },
+                  ].map((p) => (
+                    <g key={p.label} transform={`translate(${p.x} ${p.y})`}>
+                      <rect
+                        x={-p.w / 2}
+                        y="-3.6"
+                        width={p.w}
+                        height="7.2"
+                        rx="3.6"
+                        fill="#F7F4EE"
+                        stroke="#B49B5E"
+                        strokeWidth="0.4"
+                      />
+                      <text
+                        y="1.6"
+                        textAnchor="middle"
+                        fontSize="4.4"
+                        fontWeight="700"
+                        letterSpacing="0.08em"
+                        fill="#2B2B27"
+                        fontFamily="Karla, system-ui, sans-serif"
+                      >
+                        {p.label}
+                      </text>
+                    </g>
+                  ))}
                 </g>
               </g>
             </svg>

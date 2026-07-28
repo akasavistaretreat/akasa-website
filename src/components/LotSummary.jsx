@@ -8,7 +8,8 @@ const cards = [
   { value: lotStats.available, label: "Lots Available", note: "Limited lot availability" },
 ];
 
-const soldPct = Math.round((lotStats.sold / lotStats.total) * 100);
+// Rounded "already sold" figure shown on the gauge (marketing headline).
+const soldPct = 60;
 
 // SVG radial gauge geometry
 const R = 84;

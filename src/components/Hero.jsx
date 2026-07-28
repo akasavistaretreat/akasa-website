@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { scrollToId } from "./shared/Motion.jsx";
-import { videoSrc } from "./shared/media.js";
+import { useVideoSrc } from "./shared/media.js";
 import { site } from "../data/site.js";
 
 const highlights = [
   { value: "39", label: "Total Lots" },
-  { value: "24", label: "Sold" },
+  { value: "23", label: "Sold" },
   { value: "15", label: "Available" },
   { value: "6 / 9", label: "Progress Level" },
   { value: "Aug 2026", label: "Cottage Units Approval" },
@@ -16,6 +16,7 @@ const highlights = [
 export default function Hero() {
   const sectionRef = useRef(null);
   const videoRef = useRef(null);
+  const heroSrc = useVideoSrc("hero-valley");
 
   // Pause the ambient loop once the hero scrolls out of view — a playing
   // video keeps the decoder busy even when hidden, stealing scroll budget
@@ -48,6 +49,7 @@ export default function Hero() {
       {/* Background video: slow ambient loop */}
       <video
         ref={videoRef}
+        key={heroSrc}
         className="absolute inset-0 h-full w-full scale-[1.04] object-cover opacity-60"
         muted
         playsInline
@@ -56,7 +58,7 @@ export default function Hero() {
         autoPlay
         loop
       >
-        <source src={videoSrc("hero-valley")} type="video/mp4" />
+        <source src={heroSrc} type="video/mp4" />
       </video>
       {/* Soft charcoal wash for legibility */}
       <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/20 to-ink/70" />

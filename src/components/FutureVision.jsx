@@ -1,9 +1,13 @@
 import { FadeUp } from "./shared/Motion.jsx";
 import { scrollToId } from "./shared/Motion.jsx";
 import { ScrubVideo } from "./shared/ScrollFx.jsx";
-import { videoSrc } from "./shared/media.js";
+import { useVideoSrc } from "./shared/media.js";
 
 export default function FutureVision() {
+  // Lives in a fixed 4:3 frame, so this switches on width (bandwidth) only —
+  // never on orientation. A portrait cut would letterbox inside the box.
+  const revealSrc = useVideoSrc("masterplan-reveal", "box");
+
   return (
     <section id="vision" className="section bg-linen">
       <div className="section-inner grid items-center gap-14 lg:grid-cols-2">
@@ -38,7 +42,8 @@ export default function FutureVision() {
           <div className="overflow-hidden rounded-card shadow-soft">
             {/* Scrubs forward as the visitor scrolls this section into view */}
             <ScrubVideo
-              src={videoSrc("masterplan-reveal")}
+              key={revealSrc}
+              src={revealSrc}
               poster="/images/gallery-masterplan.jpg"
               className="aspect-[4/3] w-full"
             />

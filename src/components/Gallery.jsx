@@ -5,7 +5,7 @@ import { galleryItems } from "../data/gallery.js";
 
 export default function Gallery() {
   return (
-    <section id="gallery" className="section bg-paper">
+    <section id="gallery" className="section bg-linen">
       <div className="section-inner">
         <SectionHeading
           eyebrow="The Land Today"

@@ -41,7 +41,7 @@ export default function FAQ() {
   const [openIdx, setOpenIdx] = useState(0);
 
   return (
-    <section id="faq" className="section bg-linen">
+    <section id="faq" className="section bg-paper">
       <div className="section-inner grid gap-14 lg:grid-cols-[1fr_1.6fr]">
         <SectionHeading
           eyebrow="Questions"
