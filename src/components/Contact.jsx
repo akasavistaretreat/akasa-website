@@ -2,8 +2,19 @@ import { useState } from "react";
 import { FadeUp } from "./shared/Motion.jsx";
 import { site, whatsappUrl } from "../data/site.js";
 
+// min-w-0 matters: grid items default to min-width:auto, so a control whose
+// intrinsic width exceeds its column (iOS date inputs are the usual offender)
+// pushes straight out of the card instead of shrinking.
 const inputCls =
-  "w-full rounded-xl border border-sand bg-white/80 px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/35 outline-none transition focus:border-gold/60 focus:ring-2 focus:ring-gold/15";
+  "w-full min-w-0 rounded-xl border border-sand bg-white/80 px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/35 outline-none transition focus:border-gold/60 focus:ring-2 focus:ring-gold/15";
+
+// iOS Safari ignores width on a native date input and centres its value.
+// appearance-none drops the native chrome so w-full is respected, and the
+// ::-webkit-date-and-time-value rules pull the text back to the left so it
+// lines up with the placeholder in every other field.
+const dateCls = `${inputCls} appearance-none bg-none text-left [&::-webkit-calendar-picker-indicator]:opacity-50 [&::-webkit-date-and-time-value]:m-0 [&::-webkit-date-and-time-value]:text-left`;
+
+const fieldLabelCls = "mb-1.5 block text-[11px] font-light tracking-wide text-charcoal/50";
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -142,19 +153,28 @@ export default function Contact() {
                 onChange={set("city")}
                 className={inputCls}
               />
-              <select value={form.interest} onChange={set("interest")} className={inputCls}>
-                <option>Plot</option>
-                <option>Site Visit</option>
-                <option>Brochure</option>
-                <option>General Enquiry</option>
-              </select>
-              <input
-                type="date"
-                aria-label="Preferred Site Visit Date"
-                value={form.visitDate}
-                onChange={set("visitDate")}
-                className={inputCls}
-              />
+              {/* These two carry visible labels: a <select> and a date input
+                  can't show placeholder text, and an unlabelled date field
+                  reads as an arbitrary date with no clue what it's for. */}
+              <label className="block">
+                <span className={fieldLabelCls}>Interested In</span>
+                <select value={form.interest} onChange={set("interest")} className={inputCls}>
+                  <option>Plot</option>
+                  <option>Site Visit</option>
+                  <option>Brochure</option>
+                  <option>General Enquiry</option>
+                </select>
+              </label>
+              <label className="block">
+                <span className={fieldLabelCls}>Preferred Site Visit Date</span>
+                <input
+                  type="date"
+                  min={new Date().toISOString().slice(0, 10)}
+                  value={form.visitDate}
+                  onChange={set("visitDate")}
+                  className={dateCls}
+                />
+              </label>
             </div>
             <textarea
               rows={4}
