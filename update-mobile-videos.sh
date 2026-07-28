@@ -55,6 +55,23 @@ for entry in "${JOBS[@]}"; do
   echo "  -> $OUT ($(du -h "$OUT" | cut -f1))"
 done
 
+# masterplan-reveal is the odd one out: it sits in a fixed aspect-[4/3] frame
+# in FutureVision, so it needs no crop at all — the 2880x2160 master is already
+# exactly 4:3. Straight downscale from the 4K, which is both sharper than the
+# old encode (that one came off a 1664px upscale) and far lighter.
+MP_RAW="$RAWDIR/masterplan-reveal-4k.mp4"
+MP_OUT="$OUTDIR/masterplan-reveal-mobile.mp4"
+if [ ! -f "$MP_RAW" ]; then
+  echo "Downloading 4K master for masterplan-reveal..."
+  curl -L --progress-bar -o "$MP_RAW" \
+    "$CDN/hf_20260711_022301_7560df9c-c660-4e92-b5b6-281a2247dfe3.mp4"
+fi
+echo "Encoding $MP_OUT (1080x810, native 4:3)..."
+ffmpeg -y -loglevel error -i "$MP_RAW" \
+  -vf "scale=1080:810" -an -c:v libx264 -preset medium \
+  -crf 25 -pix_fmt yuv420p -movflags +faststart "$MP_OUT"
+echo "  -> $MP_OUT ($(du -h "$MP_OUT" | cut -f1))"
+
 echo
 echo "Done. src/components/shared/media.js swaps to *-mobile.mp4 whenever the"
 echo "viewport is portrait-ish (w/h < 0.85) — phones AND tablets in portrait —"
