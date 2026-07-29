@@ -482,7 +482,7 @@ export default function InteractiveMasterplan() {
                 <g style={{ pointerEvents: "none" }}>
                   {[
                     { x: 714, y: 112, w: 34, label: "WATCHTOWER" },
-                    { x: 327, y: 505, w: 28, label: "SECURITY" },
+                    { x: 318, y: 505, w: 45, label: "SECURITY GATE" },
                   ].map((p) => (
                     <g key={p.label} transform={`translate(${p.x} ${p.y})`}>
                       <rect
