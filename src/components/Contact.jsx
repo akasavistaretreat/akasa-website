@@ -39,20 +39,63 @@ export default function Contact() {
     visitDate: "",
     message: "",
   });
-  const [submitted, setSubmitted] = useState(false);
+  // "idle" | "sending" | "saved" | "unsaved" | "error"
+  //   saved    — the enquiry is in the sheet, promoters will see it
+  //   unsaved  — no endpoint configured, so WhatsApp is the only route
+  //   error    — endpoint exists but the write failed; don't pretend otherwise
+  const [status, setStatus] = useState("idle");
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Wire this to your backend / Google Form / email service.
-    // For now, open WhatsApp pre-filled with the enquiry details.
-    const text = encodeURIComponent(
+  const endpoint = import.meta.env.VITE_LEAD_ENDPOINT;
+
+  const whatsappHref = () =>
+    `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(
       `Hi, I am interested in AKASA Valley Retreat.\n\nName: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nCity: ${form.city}\nInterested in: ${form.interest}\nPreferred visit date: ${form.visitDate || "—"}\nMessage: ${form.message || "—"}`
-    );
-    window.open(`https://wa.me/${site.whatsappNumber}?text=${text}`, "_blank");
-    setSubmitted(true);
+    )}`;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // No endpoint configured yet (see lead-capture/README.md). Say so plainly
+    // rather than showing a thank-you for a lead nobody recorded.
+    if (!endpoint) {
+      setStatus("unsaved");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      // text/plain keeps this a CORS simple request — Apps Script can't answer
+      // the preflight that application/json would trigger.
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ ...form, source: "website" }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      setStatus("saved");
+    } catch (err) {
+      console.error("Enquiry could not be saved:", err);
+      setStatus("error");
+    }
   };
+
+  const notice = {
+    saved: {
+      tone: "bg-moss/10 text-moss",
+      text: "Thank you — your enquiry has been received. The promoters will connect with you shortly. You can also continue the conversation on WhatsApp now.",
+    },
+    unsaved: {
+      tone: "bg-gold/10 text-charcoal",
+      text: "Your details aren't stored on this site yet. Please send them via WhatsApp or call a promoter directly so nothing is missed.",
+    },
+    error: {
+      tone: "bg-gold/10 text-charcoal",
+      text: "We couldn't save your enquiry just now. Please send it on WhatsApp or call a promoter directly — sorry for the detour.",
+    },
+  }[status];
 
   return (
     <section id="contact" className="section bg-forest">
@@ -130,19 +173,29 @@ export default function Contact() {
             onSubmit={handleSubmit}
             className="rounded-card bg-paper p-8 shadow-lift sm:p-10"
           >
-            {submitted && (
-              <p className="mb-6 rounded-xl bg-moss/10 px-4 py-3 text-sm text-moss">
-                Thank you — your enquiry has been prepared. The promoters will connect
-                with you shortly.
-              </p>
+            {notice && (
+              <div
+                role="status"
+                aria-live="polite"
+                className={`mb-6 rounded-xl px-4 py-3 text-sm ${notice.tone}`}
+              >
+                <p>{notice.text}</p>
+                <a
+                  href={whatsappHref()}
+                  target="_blank"
+                  rel="noopener"
+                  className="mt-3 inline-block rounded-full bg-forest px-5 py-2 text-xs font-medium text-paper transition hover:bg-forest/90"
+                >
+                  Continue on WhatsApp
+                </a>
+              </div>
             )}
 
             <div className="grid gap-4 sm:grid-cols-2">
-              {/* name + autoComplete are here for the browser's benefit: they're
-                  what lets iOS and Chrome autofill a visitor's details in one
-                  tap. Nothing posts these to a server — handleSubmit builds a
-                  WhatsApp message — but a lead form that autofills gets
-                  completed noticeably more often on mobile. */}
+              {/* name + autoComplete let iOS and Chrome autofill a visitor's
+                  details in one tap, which measurably lifts completion on
+                  mobile. The name values also match the keys the Apps Script
+                  endpoint writes to the sheet. */}
               <input
                 required
                 name="name"
@@ -240,8 +293,12 @@ export default function Contact() {
               className={`${inputCls} mt-4`}
             />
 
-            <button type="submit" className="btn-primary mt-6 w-full">
-              Submit Enquiry
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="btn-primary mt-6 w-full disabled:cursor-wait disabled:opacity-70"
+            >
+              {status === "sending" ? "Sending…" : "Submit Enquiry"}
             </button>
             <p className="mt-4 text-center text-[11px] font-light text-charcoal/45">
               By submitting, you agree to be contacted about AKASA Valley Retreat. No

@@ -1,0 +1,72 @@
+# Enquiry capture — setup
+
+Ten minutes, once. After this every enquiry lands in a Google Sheet you own,
+and the form stops claiming success when nothing was sent.
+
+## 1. Make the sheet
+
+1. Go to [sheets.new](https://sheets.new) and name it something like
+   `AKASA Enquiries`.
+2. **Extensions → Apps Script.** A script editor opens in a new tab.
+3. Delete the placeholder `function myFunction() {}`.
+4. Paste in the whole of [`Code.gs`](./Code.gs).
+5. Optional: to get an email on every enquiry, set `NOTIFY_EMAIL` near the top
+   to your address. Leave it as `''` to skip.
+6. Save (⌘S).
+
+## 2. Deploy it
+
+1. **Deploy → New deployment.**
+2. Click the gear next to "Select type" and choose **Web app**.
+3. Set:
+   - **Execute as:** Me
+   - **Who has access:** **Anyone** ← this matters. "Anyone with Google account"
+     will silently reject visitors who aren't signed in.
+4. **Deploy.** Google asks you to authorise — it will warn the app is
+   unverified. That's expected for your own script: **Advanced → Go to
+   (unsafe)**.
+5. Copy the **Web app URL**. It ends in `/exec`.
+
+Paste that URL into a browser. You should see `{"ok":true,...}`. If you get a
+sign-in page, revisit step 3.
+
+## 3. Point the site at it
+
+Create `.env.local` in the `akasa-website` folder:
+
+```
+VITE_LEAD_ENDPOINT=https://script.google.com/macros/s/AKfy…/exec
+```
+
+Then add the same variable in Vercel: **Project → Settings → Environment
+Variables**, name `VITE_LEAD_ENDPOINT`, applied to Production and Preview.
+Redeploy so the build picks it up — Vite inlines env vars at build time, so an
+existing deployment won't see it.
+
+## 4. Check it end to end
+
+Submit the form on the live site with your own details. A row should appear in
+the sheet within a second or two. If it doesn't, open the browser console —
+the form logs the failure reason.
+
+## If the variable isn't set
+
+The form still works: it falls back to WhatsApp only, and the success message
+changes to say the enquiry wasn't recorded and to use WhatsApp or phone. It
+won't claim a lead was saved when it wasn't.
+
+## Re-deploying after script edits
+
+Apps Script pins each deployment to a code version. If you edit `Code.gs`, go
+**Deploy → Manage deployments → edit (pencil) → Version: New version →
+Deploy**. The `/exec` URL stays the same.
+
+## Notes
+
+- The browser sends `text/plain` on purpose. It keeps the POST a CORS "simple
+  request", and Apps Script can't answer the preflight that
+  `application/json` would trigger.
+- Writes are serialised behind `LockService`, so two enquiries in the same
+  second can't overwrite one another.
+- Free Gmail accounts can send ~100 notification emails a day, which is far
+  above the expected volume here.
