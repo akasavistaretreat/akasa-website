@@ -19,9 +19,19 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const go = (id) => {
+  // Nav items are real anchors, not buttons. That costs nothing and buys three
+  // things a click handler can't: right-click "open in new tab", a URL that
+  // reflects where you are (so /#faq can be shared), and a working back button.
+  // We still intercept the click to keep the smooth scroll, then write the hash
+  // ourselves — pushState rather than replaceState so back steps through.
+  const go = (e, id) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; // let the browser handle it
+    e.preventDefault();
     setOpen(false);
     scrollToId(id);
+    if (window.location.hash !== `#${id}`) {
+      window.history.pushState(null, "", `#${id}`);
+    }
   };
 
   return (
@@ -44,26 +54,33 @@ export default function Navbar() {
 
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((l) => (
-            <button
+            <a
               key={l.id}
-              onClick={() => go(l.id)}
+              href={`#${l.id}`}
+              onClick={(e) => go(e, l.id)}
               className={`text-sm tracking-wide transition-colors hover:text-gold ${
                 scrolled ? "text-charcoal/70" : "text-paper/80"
               }`}
             >
               {l.label}
-            </button>
+            </a>
           ))}
-          <button onClick={() => go("contact")} className="btn-primary !px-5 !py-2 text-xs">
+          <a
+            href="#contact"
+            onClick={(e) => go(e, "contact")}
+            className="btn-primary !px-5 !py-2 text-xs"
+          >
             Enquire
-          </button>
+          </a>
         </nav>
 
         {/* Mobile toggle */}
         <button
           className={`md:hidden ${scrolled ? "text-forest" : "text-paper"}`}
           onClick={() => setOpen(!open)}
-          aria-label="Menu"
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          aria-label={open ? "Close menu" : "Open menu"}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
@@ -72,19 +89,27 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <nav className="mx-4 mb-4 rounded-card bg-paper p-6 shadow-lift md:hidden">
+        <nav
+          id="mobile-nav"
+          className="mx-4 mb-4 rounded-card bg-paper p-6 shadow-lift md:hidden"
+        >
           {links.map((l) => (
-            <button
+            <a
               key={l.id}
-              onClick={() => go(l.id)}
+              href={`#${l.id}`}
+              onClick={(e) => go(e, l.id)}
               className="block w-full py-3 text-left text-charcoal/80 hover:text-forest"
             >
               {l.label}
-            </button>
+            </a>
           ))}
-          <button onClick={() => go("contact")} className="btn-primary mt-4 w-full">
+          <a
+            href="#contact"
+            onClick={(e) => go(e, "contact")}
+            className="btn-primary mt-4 block w-full text-center"
+          >
             Enquire Now
-          </button>
+          </a>
         </nav>
       )}
     </header>

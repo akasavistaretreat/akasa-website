@@ -5,7 +5,7 @@ export const benefits = [
   },
   {
     title: "Limited Lot Availability",
-    text: "Only 39 lots in the entire development — 24 already taken. A naturally limited, low-density hill-top community.",
+    text: "Only 39 lots in the entire development — 23 already sold, and just 15 remain. A naturally limited, low-density hill-top community.",
   },
   {
     title: "Visible, Verifiable Progress",

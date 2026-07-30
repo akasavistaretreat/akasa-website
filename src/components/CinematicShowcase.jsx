@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useScroll,
@@ -78,10 +78,32 @@ export default function CinematicShowcase() {
   const villaSrc = useVideoSrc("pool-villa");
   const cottageSrc = useVideoSrc("cottage-glide");
 
+  // Don't fetch either film until the section is near. This is a long way down
+  // the page, so preloading meant a phone spent several MB on two videos the
+  // visitor might never scroll to. The poster images stand in until then, and
+  // the 600px margin means the files are usually buffered before the pin
+  // starts, so the scroll-scrub still feels immediate.
+  const [loadVideos, setLoadVideos] = useState(false);
+  useEffect(() => {
+    const section = ref.current;
+    if (!section) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoadVideos(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" }
+    );
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
+
   const videoProps = {
     muted: true,
     playsInline: true,
-    preload: "auto",
+    preload: loadVideos ? "auto" : "none",
     autoPlay: reduced || undefined,
     loop: reduced || undefined,
   };
@@ -101,12 +123,12 @@ export default function CinematicShowcase() {
           />
           <video
             ref={villaRef}
-            key={villaSrc}
+            key={`${villaSrc}-${loadVideos}`}
             poster="/images/pool-villa.jpg"
             className="relative h-full w-full object-cover"
             {...videoProps}
           >
-            <source src={villaSrc} type="video/mp4" />
+            {loadVideos && <source src={villaSrc} type="video/mp4" />}
           </video>
         </motion.div>
 
@@ -123,12 +145,12 @@ export default function CinematicShowcase() {
           />
           <video
             ref={cottageRef}
-            key={cottageSrc}
+            key={`${cottageSrc}-${loadVideos}`}
             poster="/images/suite-room.jpg"
             className="relative h-full w-full object-cover"
             {...videoProps}
           >
-            <source src={cottageSrc} type="video/mp4" />
+            {loadVideos && <source src={cottageSrc} type="video/mp4" />}
           </video>
         </motion.div>
 

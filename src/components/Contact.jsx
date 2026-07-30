@@ -138,8 +138,15 @@ export default function Contact() {
             )}
 
             <div className="grid gap-4 sm:grid-cols-2">
+              {/* name + autoComplete are here for the browser's benefit: they're
+                  what lets iOS and Chrome autofill a visitor's details in one
+                  tap. Nothing posts these to a server — handleSubmit builds a
+                  WhatsApp message — but a lead form that autofills gets
+                  completed noticeably more often on mobile. */}
               <input
                 required
+                name="name"
+                autoComplete="name"
                 placeholder="Full Name"
                 value={form.name}
                 onChange={set("name")}
@@ -148,6 +155,9 @@ export default function Contact() {
               <input
                 required
                 type="tel"
+                name="phone"
+                autoComplete="tel"
+                inputMode="tel"
                 placeholder="Phone Number"
                 value={form.phone}
                 onChange={set("phone")}
@@ -155,12 +165,17 @@ export default function Contact() {
               />
               <input
                 type="email"
+                name="email"
+                autoComplete="email"
+                inputMode="email"
                 placeholder="Email Address"
                 value={form.email}
                 onChange={set("email")}
                 className={inputCls}
               />
               <input
+                name="city"
+                autoComplete="address-level2"
                 placeholder="City / Location"
                 value={form.city}
                 onChange={set("city")}
@@ -171,7 +186,12 @@ export default function Contact() {
                   reads as an arbitrary date with no clue what it's for. */}
               <label className="block">
                 <span className={fieldLabelCls}>Interested In</span>
-                <select value={form.interest} onChange={set("interest")} className={inputCls}>
+                <select
+                  name="interest"
+                  value={form.interest}
+                  onChange={set("interest")}
+                  className={inputCls}
+                >
                   <option>Plot</option>
                   <option>Site Visit</option>
                   <option>Brochure</option>
@@ -183,6 +203,7 @@ export default function Contact() {
                 <div className="relative">
                   <input
                     type="date"
+                    name="visitDate"
                     min={new Date().toISOString().slice(0, 10)}
                     value={form.visitDate}
                     onChange={set("visitDate")}
@@ -212,6 +233,7 @@ export default function Contact() {
             </div>
             <textarea
               rows={4}
+              name="message"
               placeholder="Message"
               value={form.message}
               onChange={set("message")}

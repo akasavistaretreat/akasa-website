@@ -119,9 +119,13 @@ export default function Hero() {
             >
               Book a Site Visit
             </button>
+            {/* download alone isn't enough: iOS Safari ignores it and navigates
+                away, losing the visitor's place. target=_blank keeps the page. */}
             <a
               href={site.brochurePath}
               download
+              target="_blank"
+              rel="noopener"
               className="btn border border-paper/25 text-paper/80 hover:bg-paper/10"
             >
               Download Brochure
