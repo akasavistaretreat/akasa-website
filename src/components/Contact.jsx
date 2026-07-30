@@ -39,10 +39,12 @@ export default function Contact() {
     visitDate: "",
     message: "",
   });
-  // "idle" | "sending" | "saved" | "unsaved" | "error"
-  //   saved    — the enquiry is in the sheet, promoters will see it
+  // "idle" | "sending" | "saved" | "sent" | "unsaved" | "error"
+  //   saved    — confirmed in the sheet, promoters will see it
+  //   sent     — request delivered but the response was unreadable, so we say
+  //              so and nudge them to WhatsApp as a belt-and-braces
   //   unsaved  — no endpoint configured, so WhatsApp is the only route
-  //   error    — endpoint exists but the write failed; don't pretend otherwise
+  //   error    — nothing got through; don't pretend otherwise
   const [status, setStatus] = useState("idle");
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
@@ -65,19 +67,31 @@ export default function Contact() {
     }
 
     setStatus("sending");
+    // text/plain keeps this a CORS simple request — Apps Script can't answer
+    // the preflight that application/json would trigger.
+    const body = JSON.stringify({ ...form, source: "website" });
+    const headers = { "Content-Type": "text/plain;charset=utf-8" };
+
     try {
-      // text/plain keeps this a CORS simple request — Apps Script can't answer
-      // the preflight that application/json would trigger.
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ ...form, source: "website" }),
-      });
+      const res = await fetch(endpoint, { method: "POST", headers, body });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
       setStatus("saved");
+      return;
     } catch (err) {
-      console.error("Enquiry could not be saved:", err);
+      console.error("Enquiry could not be saved (readable attempt):", err);
+    }
+
+    // Apps Script bounces /exec through a redirect, and depending on how the
+    // deployment is configured the browser may refuse to let us read the
+    // result. The write itself still lands. So retry opaquely: the row gets
+    // created, but we genuinely cannot confirm it, and the message we show
+    // says exactly that rather than claiming a clean save.
+    try {
+      await fetch(endpoint, { method: "POST", mode: "no-cors", headers, body });
+      setStatus("sent");
+    } catch (err) {
+      console.error("Enquiry could not be sent at all:", err);
       setStatus("error");
     }
   };
@@ -86,6 +100,10 @@ export default function Contact() {
     saved: {
       tone: "bg-moss/10 text-moss",
       text: "Thank you — your enquiry has been received. The promoters will connect with you shortly. You can also continue the conversation on WhatsApp now.",
+    },
+    sent: {
+      tone: "bg-moss/10 text-moss",
+      text: "Thank you — your enquiry has been sent. We couldn't get a confirmation back from the server, so if you'd like to be certain it reached the promoters, send it on WhatsApp too.",
     },
     unsaved: {
       tone: "bg-gold/10 text-charcoal",
