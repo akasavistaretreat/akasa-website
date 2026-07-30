@@ -17,6 +17,13 @@
 
 var SHEET_NAME = 'Enquiries';
 
+// Leave '' when this script is bound to a sheet (Extensions → Apps Script).
+// If you instead created a standalone script at script.new — the workaround
+// when Drive refuses to open the bound editor — paste the sheet's ID here.
+// It's the long string in the sheet URL between /d/ and /edit:
+//   docs.google.com/spreadsheets/d/THIS_PART/edit
+var SPREADSHEET_ID = '';
+
 // Set to an address to get an email on every enquiry. Leave '' for none.
 var NOTIFY_EMAIL = '';
 
@@ -81,7 +88,9 @@ function doGet() {
 }
 
 function getSheet() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SPREADSHEET_ID
+    ? SpreadsheetApp.openById(SPREADSHEET_ID)
+    : SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(SHEET_NAME);
 
   if (!sheet) {

@@ -14,6 +14,33 @@ and the form stops claiming success when nothing was sent.
    to your address. Leave it as `''` to skip.
 6. Save (⌘S).
 
+### If Drive says "Sorry, unable to open the file at present"
+
+Nothing is wrong with your sheet. This is almost always a multi-account
+collision: Drive opens Apps Script under your default account (`/u/0/`) while
+the sheet belongs to a different one.
+
+Try, in order:
+
+1. Open an **incognito window**, sign into only the account that owns the
+   sheet, open the sheet, then Extensions → Apps Script.
+2. In the failing URL, change `/u/0/` to `/u/1/` (or `/u/2/`) and reload.
+3. Sign out of every Google account except the owner.
+4. Disable ad blockers / allow third-party cookies for `script.google.com`.
+
+**Or skip the bound editor entirely.** This works regardless:
+
+1. Go to [script.new](https://script.new) — a standalone project, no Drive
+   file to open.
+2. Paste `Code.gs` in as before.
+3. Open your sheet and copy its ID from the URL — the long string between
+   `/d/` and `/edit`.
+4. Set `SPREADSHEET_ID` near the top of the script to that ID.
+5. Continue from step 2 below. Everything else is identical.
+
+The only difference is that a standalone script needs to be told which sheet
+to write to; a bound one already knows.
+
 ## 2. Deploy it
 
 1. **Deploy → New deployment.**
