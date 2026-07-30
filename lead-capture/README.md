@@ -59,16 +59,17 @@ sign-in page, revisit step 3.
 
 ## 3. Point the site at it
 
-Create `.env.local` in the `akasa-website` folder:
+Already done — the live `/exec` URL is committed as `site.leadEndpoint` in
+`src/data/site.js`. Nothing to configure in Vercel.
 
-```
-VITE_LEAD_ENDPOINT=https://script.google.com/macros/s/AKfy…/exec
-```
+That's a deliberate choice. Vite inlines `VITE_*` variables into the public JS
+bundle at build time, so the URL ends up readable in the shipped source either
+way; treating it as a secret bought nothing and added a step that, if
+forgotten, would silently drop every lead.
 
-Then add the same variable in Vercel: **Project → Settings → Environment
-Variables**, name `VITE_LEAD_ENDPOINT`, applied to Production and Preview.
-Redeploy so the build picks it up — Vite inlines env vars at build time, so an
-existing deployment won't see it.
+To replace it later (new sheet, new deployment), edit that one line. To point
+a local build at a *different* sheet without touching the committed default,
+put `VITE_LEAD_ENDPOINT=…` in `.env.local` — it wins when set.
 
 ## 4. Check it end to end
 

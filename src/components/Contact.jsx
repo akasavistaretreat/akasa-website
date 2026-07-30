@@ -47,7 +47,7 @@ export default function Contact() {
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
-  const endpoint = import.meta.env.VITE_LEAD_ENDPOINT;
+  const endpoint = import.meta.env.VITE_LEAD_ENDPOINT || site.leadEndpoint;
 
   const whatsappHref = () =>
     `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(
