@@ -10,6 +10,17 @@ export const site = {
   whatsappMessage:
     "Hi, I am interested in AKASA Valley Retreat. Please share available plot details and site visit information.",
   brochurePath: "/brochure/Akasa_Brochure.pdf",
+  pricing: {
+    // "onwards" is the standard Indian real-estate qualifier and it matters
+    // legally as well as commercially: it makes clear this is the entry price
+    // for the smallest plot, not a flat rate. Keep the caveat alongside it —
+    // an unqualified figure on a landing page is the kind of thing buyers
+    // quote back to you later.
+    from: "₹41 Lakhs",
+    qualifier: "onwards",
+    eyebrow: "Early-Entry Pricing",
+    note: "Indicative starting price, varying by plot size and position. Subject to change and to approvals.",
+  },
   // Google Apps Script web app that records enquiries to the sheet.
   // Committed rather than kept only in an env var on purpose: Vite inlines
   // VITE_* vars into the public JS bundle at build time, so there's no secrecy

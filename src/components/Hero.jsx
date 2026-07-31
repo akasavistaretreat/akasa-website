@@ -104,11 +104,51 @@ export default function Hero() {
             Near Coimbatore, Anaikatti · By the Siruvani River
           </motion.p>
 
+          {/* Price band. A number is the single strongest qualifier on a plot
+              landing page — it filters out browsers and gives serious buyers a
+              reason to enquire instead of bouncing to ask "how much?". Paired
+              with the remaining-lot count so the price lands next to the
+              scarcity rather than floating alone. */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.7 }}
+            className="mt-6 inline-flex flex-col gap-3 rounded-card border border-gold/30 bg-ink/25 px-5 py-4 backdrop-blur-sm sm:mt-8 sm:flex-row sm:items-center sm:gap-6 sm:px-7"
+          >
+            <div>
+              <span className="block text-[10px] font-medium uppercase tracking-widest2 text-goldsoft sm:text-[11px]">
+                {site.pricing.eyebrow}
+              </span>
+              <span className="mt-1 flex items-baseline gap-2">
+                <span className="font-display text-3xl font-light text-paper sm:text-4xl">
+                  {site.pricing.from}
+                </span>
+                <span className="text-sm font-light text-paper/60">
+                  {site.pricing.qualifier}
+                </span>
+              </span>
+            </div>
+            <span className="hidden h-10 w-px bg-paper/15 sm:block" />
+            <span className="text-xs font-light leading-relaxed text-paper/70 sm:text-sm">
+              Only <span className="font-medium text-goldsoft">15 of 39</span> plots
+              <br className="hidden sm:block" /> still available
+            </span>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.9 }}
+            className="mt-3 max-w-md text-[11px] font-light leading-relaxed text-paper/45"
+          >
+            {site.pricing.note}
+          </motion.p>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.75 }}
-            className="mt-6 flex flex-wrap gap-2.5 sm:mt-10 sm:gap-3"
+            className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3"
           >
             <button onClick={() => scrollToId("contact")} className="btn bg-gold text-ink hover:bg-goldsoft">
               Enquire Now
