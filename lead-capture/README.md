@@ -45,6 +45,11 @@ to write to; a bound one already knows.
 
 1. **Deploy → New deployment.**
 2. Click the gear next to "Select type" and choose **Web app**.
+   This is the step people miss. The gear is small, and the dialog defaults to
+   **Library**, which has no HTTP endpoint — deploy as a Library and every
+   request comes back `401 Unauthorized`. If the URL you end up with contains
+   `/library/`, you picked the wrong type. A correct one looks like
+   `https://script.google.com/macros/s/AKfy…/exec`.
 3. Set:
    - **Execute as:** Me
    - **Who has access:** **Anyone** ← this matters. "Anyone with Google account"
@@ -54,8 +59,13 @@ to write to; a bound one already knows.
    (unsafe)**.
 5. Copy the **Web app URL**. It ends in `/exec`.
 
-Paste that URL into a browser. You should see `{"ok":true,...}`. If you get a
-sign-in page, revisit step 3.
+Paste that URL into a browser. You should see
+`{"ok":true,"service":"akasa-lead-capture"}`.
+
+- A **sign-in page** means access isn't "Anyone" — revisit step 3.
+- A **401** in the browser console when the site posts means the same thing, or
+  that the deployment is a Library rather than a Web app.
+- Anything else means the deployment type is wrong; redo step 2.
 
 ## 3. Point the site at it
 
