@@ -76,8 +76,11 @@ export function ScrubVideo({ src, poster, className = "" }) {
   });
   useVideoScrub(scrollYProgress, videoRef, !reduced);
 
+  // `relative` is load-bearing, not cosmetic: useScroll measures its target
+  // against the nearest positioned ancestor, and warns (then mismeasures the
+  // scrub offset) if the target itself is statically positioned.
   return (
-    <div ref={wrapRef} className={className}>
+    <div ref={wrapRef} className={`relative ${className}`}>
       <video
         ref={videoRef}
         className="block h-full w-full object-cover"
@@ -111,8 +114,9 @@ export function Parallax({ children, speed = 0.12, className = "" }) {
     reduced ? [0, 0] : [speed * 100, speed * -100]
   );
 
+  // Same reason as ScrubVideo: useScroll needs a non-static target.
   return (
-    <motion.div ref={ref} style={{ y }} className={className}>
+    <motion.div ref={ref} style={{ y }} className={`relative ${className}`}>
       {children}
     </motion.div>
   );
