@@ -66,21 +66,25 @@ export default function Hero() {
       {/* Content — vertically auto-centred (balanced on tall screens), with a
           top pad that always clears the navbar. When content is taller than
           the screen the auto margins collapse and it simply flows down. */}
-      <div className="relative my-auto mx-auto w-full max-w-6xl px-6 pb-16 pt-28 sm:px-10 sm:pb-20 sm:pt-32">
+      <div className="relative my-auto mx-auto w-full max-w-6xl px-6 pb-12 pt-24 sm:px-10 sm:pb-14 sm:pt-28 [@media(max-height:860px)]:sm:pb-8 [@media(max-height:860px)]:sm:pt-24">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.2 }}
-            className="mb-5 text-xs font-medium uppercase tracking-widest2 text-goldsoft"
+            className="mb-4 text-xs font-medium uppercase tracking-widest2 text-goldsoft"
           >
             Attappadi · Agali · Kerala — Plots & Villa Plots
           </motion.p>
 
+          {/* min(vw,vh) is the point of the clamp below. Sizing on width alone
+              kept the heading huge on a short laptop window and pushed the
+              highlight cards off screen; tying it to whichever axis is tighter
+              means the hero shrinks to fit instead of overflowing. */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-3xl font-display text-[clamp(2rem,5.2vw,4.5rem)] font-light leading-[1.12] text-paper"
+            className="max-w-3xl font-display text-[clamp(1.9rem,min(5vw,7vh),4rem)] font-light leading-[1.08] text-paper"
           >
             Own a Slice of Paradise in the Luxury Hill-Top Retreat
           </motion.h1>
@@ -89,7 +93,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.55 }}
-            className="mt-4 max-w-xl text-sm font-light leading-relaxed text-paper/80 sm:mt-6 sm:text-base"
+            className="mt-4 max-w-xl text-sm font-light leading-relaxed text-paper/80 sm:mt-5 sm:text-base"
           >
             AKASA Valley Retreat is a nature-led investment opportunity in Attappadi, built
             around wellness, luxury villas, eco-tourism, and star-class resort hospitality.
@@ -99,7 +103,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.65 }}
-            className="mt-3 text-xs font-medium uppercase tracking-widest2 text-goldsoft sm:mt-4 sm:text-sm"
+            className="mt-2.5 text-xs font-medium uppercase tracking-widest2 text-goldsoft sm:mt-3 sm:text-sm"
           >
             Near Coimbatore, Anaikatti · By the Siruvani River
           </motion.p>
@@ -116,7 +120,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.7 }}
-            className="mt-7 border-l border-gold/50 pl-5 sm:mt-9 sm:pl-6"
+            className="mt-5 border-l border-gold/50 pl-5 sm:mt-6 sm:pl-6"
           >
             <span className="block text-[10px] font-medium uppercase tracking-widest2 text-goldsoft sm:text-[11px]">
               {site.pricing.eyebrow}
@@ -142,7 +146,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.75 }}
-            className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3"
+            className="mt-5 flex flex-wrap gap-2.5 sm:mt-6 sm:gap-3"
           >
             <button onClick={() => scrollToId("contact")} className="btn bg-gold text-ink hover:bg-goldsoft">
               Enquire Now
@@ -171,7 +175,7 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.9 } } }}
-            className="-mx-6 mt-8 flex gap-2.5 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-12 sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 lg:grid-cols-6"
+            className="-mx-6 mt-6 flex gap-2.5 overflow-x-auto px-6 pb-1 [scrollbar-width:none] sm:mx-0 sm:mt-7 sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 lg:grid-cols-6 [@media(max-height:860px)]:sm:mt-5"
           >
             {highlights.map((h) => (
               <motion.div
@@ -180,9 +184,9 @@ export default function Hero() {
                   hidden: { opacity: 0, y: 18 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
                 }}
-                className="min-w-[124px] shrink-0 rounded-card border border-paper/15 bg-ink/35 px-3.5 py-3 sm:min-w-0 sm:shrink sm:px-4 sm:py-4"
+                className="min-w-[124px] shrink-0 rounded-card border border-paper/15 bg-ink/35 px-3.5 py-2.5 sm:min-w-0 sm:shrink sm:px-4 sm:py-3"
               >
-                <p className="font-display text-lg text-goldsoft sm:text-2xl">{h.value}</p>
+                <p className="font-display text-lg text-goldsoft sm:text-xl">{h.value}</p>
                 <p className="mt-1 text-[10px] uppercase tracking-wider text-paper/70 sm:text-[11px]">{h.label}</p>
               </motion.div>
             ))}
@@ -192,7 +196,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.6 }}
-            className="mt-5 text-[11px] font-light text-paper/50 sm:mt-8"
+            className="mt-4 text-[11px] font-light text-paper/50 sm:mt-5 [@media(max-height:860px)]:sm:mt-3"
           >
             Resort under active development. Details subject to approvals and development timelines.
           </motion.p>
