@@ -39,12 +39,11 @@ export default function Contact() {
     visitDate: "",
     message: "",
   });
-  // "idle" | "sending" | "saved" | "sent" | "unsaved" | "error"
-  //   saved    — confirmed in the sheet, promoters will see it
-  //   sent     — request delivered but the response was unreadable, so we say
-  //              so and nudge them to WhatsApp as a belt-and-braces
-  //   unsaved  — no endpoint configured, so WhatsApp is the only route
-  //   error    — nothing got through; don't pretend otherwise
+  // "idle" | "sending" | "saved" | "unconfirmed" | "unsaved"
+  //   saved       — confirmed written to the sheet; the only state that may
+  //                 promise a callback
+  //   unconfirmed — we tried, we cannot tell whether it landed, we say so
+  //   unsaved     — no endpoint configured, so WhatsApp is the only route
   const [status, setStatus] = useState("idle");
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
@@ -82,18 +81,19 @@ export default function Contact() {
       console.error("Enquiry could not be saved (readable attempt):", err);
     }
 
-    // Apps Script bounces /exec through a redirect, and depending on how the
-    // deployment is configured the browser may refuse to let us read the
-    // result. The write itself still lands. So retry opaquely: the row gets
-    // created, but we genuinely cannot confirm it, and the message we show
-    // says exactly that rather than claiming a clean save.
+    // Retry opaquely. If the only problem was that we couldn't READ the reply,
+    // this still writes the row. But mode:"no-cors" resolves whether the server
+    // accepted the request or rejected it — a 401 from a misconfigured
+    // deployment resolves exactly like a success — so its resolution proves
+    // nothing and must never be reported as delivery. Fire it as a long shot,
+    // then tell the visitor plainly that we could not confirm and send them to
+    // WhatsApp.
     try {
       await fetch(endpoint, { method: "POST", mode: "no-cors", headers, body });
-      setStatus("sent");
     } catch (err) {
-      console.error("Enquiry could not be sent at all:", err);
-      setStatus("error");
+      console.error("Opaque retry also failed:", err);
     }
+    setStatus("unconfirmed");
   };
 
   const notice = {
@@ -101,17 +101,13 @@ export default function Contact() {
       tone: "bg-moss/10 text-moss",
       text: "Thank you — your enquiry has been received. The promoters will connect with you shortly. You can also continue the conversation on WhatsApp now.",
     },
-    sent: {
-      tone: "bg-moss/10 text-moss",
-      text: "Thank you — your enquiry has been sent. We couldn't get a confirmation back from the server, so if you'd like to be certain it reached the promoters, send it on WhatsApp too.",
+    unconfirmed: {
+      tone: "bg-gold/10 text-charcoal",
+      text: "We couldn't confirm your enquiry reached us. Please send it on WhatsApp or call a promoter directly — that way you know it's landed. Sorry for the detour.",
     },
     unsaved: {
       tone: "bg-gold/10 text-charcoal",
       text: "Your details aren't stored on this site yet. Please send them via WhatsApp or call a promoter directly so nothing is missed.",
-    },
-    error: {
-      tone: "bg-gold/10 text-charcoal",
-      text: "We couldn't save your enquiry just now. Please send it on WhatsApp or call a promoter directly — sorry for the detour.",
     },
   }[status];
 
