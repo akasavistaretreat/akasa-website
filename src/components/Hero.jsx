@@ -85,71 +85,64 @@ export default function Hero() {
             Own a Slice of Paradise in the Luxury Hill-Top Retreat
           </motion.h1>
 
-          {/* Copy on the left, price on the right. Two columns from lg up,
-              stacked below — at tablet width and under, a side-by-side would
-              squeeze the paragraph into a narrow ribbon. items-end keeps the
-              price band's baseline aligned with the location line rather than
-              floating level with the paragraph's first line. */}
-          <div className="mt-4 flex flex-col gap-6 sm:mt-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
-            <div className="max-w-xl">
-              <motion.p
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.55 }}
-                className="text-sm font-light leading-relaxed text-paper/80 sm:text-base"
-              >
-                AKASA Valley Retreat is a nature-led investment opportunity in Attappadi,
-                built around wellness, luxury villas, eco-tourism, and star-class resort
-                hospitality.
-              </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.55 }}
+            className="mt-4 max-w-xl text-sm font-light leading-relaxed text-paper/80 sm:mt-6 sm:text-base"
+          >
+            AKASA Valley Retreat is a nature-led investment opportunity in Attappadi, built
+            around wellness, luxury villas, eco-tourism, and star-class resort hospitality.
+          </motion.p>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.65 }}
-                className="mt-3 text-xs font-medium uppercase tracking-widest2 text-goldsoft sm:mt-4 sm:text-sm"
-              >
-                Near Coimbatore, Anaikatti · By the Siruvani River
-              </motion.p>
-            </div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.65 }}
+            className="mt-3 text-xs font-medium uppercase tracking-widest2 text-goldsoft sm:mt-4 sm:text-sm"
+          >
+            Near Coimbatore, Anaikatti · By the Siruvani River
+          </motion.p>
 
-            {/* Price band. A number is the single strongest qualifier on a plot
-                landing page — it filters out browsers and gives serious buyers a
-                reason to enquire instead of bouncing to ask "how much?". Paired
-                with the remaining-lot count so the price lands next to the
-                scarcity rather than floating alone. */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.7 }}
-              className="shrink-0 lg:max-w-sm lg:text-right"
-            >
-              <div className="inline-flex flex-col gap-3 rounded-card border border-gold/30 bg-ink/25 px-5 py-4 text-left backdrop-blur-sm sm:flex-row sm:items-center sm:gap-6 sm:px-7">
-                <div>
-                  <span className="block text-[10px] font-medium uppercase tracking-widest2 text-goldsoft sm:text-[11px]">
-                    {site.pricing.eyebrow}
-                  </span>
-                  <span className="mt-1 flex items-baseline gap-2">
-                    <span className="font-display text-3xl font-light text-paper sm:text-4xl">
-                      {site.pricing.from}
-                    </span>
-                    <span className="text-sm font-light text-paper/60">
-                      {site.pricing.qualifier}
-                    </span>
-                  </span>
-                </div>
-                <span className="hidden h-10 w-px bg-paper/15 sm:block" />
-                <span className="text-xs font-light leading-relaxed text-paper/70 sm:text-sm">
-                  Only <span className="font-medium text-goldsoft">15 of 39</span> plots
-                  <br className="hidden sm:block" /> still available
+          {/* Price band. A number is the single strongest qualifier on a plot
+              landing page — it filters out browsers and gives serious buyers a
+              reason to enquire instead of bouncing to ask "how much?". Paired
+              with the remaining-lot count so the price lands next to the
+              scarcity rather than floating alone. */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.7 }}
+            className="mt-6 inline-flex flex-col gap-3 rounded-card border border-gold/30 bg-ink/25 px-5 py-4 backdrop-blur-sm sm:mt-8 sm:flex-row sm:items-center sm:gap-6 sm:px-7"
+          >
+            <div>
+              <span className="block text-[10px] font-medium uppercase tracking-widest2 text-goldsoft sm:text-[11px]">
+                {site.pricing.eyebrow}
+              </span>
+              <span className="mt-1 flex items-baseline gap-2">
+                <span className="font-display text-3xl font-light text-paper sm:text-4xl">
+                  {site.pricing.from}
                 </span>
-              </div>
+                <span className="text-sm font-light text-paper/60">
+                  {site.pricing.qualifier}
+                </span>
+              </span>
+            </div>
+            <span className="hidden h-10 w-px bg-paper/15 sm:block" />
+            <span className="text-xs font-light leading-relaxed text-paper/70 sm:text-sm">
+              Only <span className="font-medium text-goldsoft">15 of 39</span> plots
+              <br className="hidden sm:block" /> still available
+            </span>
+          </motion.div>
 
-              <p className="mt-3 max-w-md text-[11px] font-light leading-relaxed text-paper/45">
-                {site.pricing.note}
-              </p>
-            </motion.div>
-          </div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.9 }}
+            className="mt-3 max-w-md text-[11px] font-light leading-relaxed text-paper/45"
+          >
+            {site.pricing.note}
+          </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
