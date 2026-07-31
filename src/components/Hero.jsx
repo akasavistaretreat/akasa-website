@@ -104,45 +104,39 @@ export default function Hero() {
             Near Coimbatore, Anaikatti · By the Siruvani River
           </motion.p>
 
-          {/* Price band. A number is the single strongest qualifier on a plot
+          {/* Price. A number is the single strongest qualifier on a plot
               landing page — it filters out browsers and gives serious buyers a
-              reason to enquire instead of bouncing to ask "how much?". Paired
-              with the remaining-lot count so the price lands next to the
-              scarcity rather than floating alone. */}
+              reason to enquire instead of bouncing to ask "how much?".
+              Editorial treatment rather than a bordered card: a hairline gold
+              rule carries the emphasis, so the figure reads as a considered
+              statement instead of a price sticker, which suits a retreat
+              better than a badge would. Scarcity sits directly beneath so the
+              two are read together. */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.7 }}
-            className="mt-6 inline-flex flex-col gap-3 rounded-card border border-gold/30 bg-ink/25 px-5 py-4 backdrop-blur-sm sm:mt-8 sm:flex-row sm:items-center sm:gap-6 sm:px-7"
+            className="mt-7 border-l border-gold/50 pl-5 sm:mt-9 sm:pl-6"
           >
-            <div>
-              <span className="block text-[10px] font-medium uppercase tracking-widest2 text-goldsoft sm:text-[11px]">
-                {site.pricing.eyebrow}
-              </span>
-              <span className="mt-1 flex items-baseline gap-2">
-                <span className="font-display text-3xl font-light text-paper sm:text-4xl">
-                  {site.pricing.from}
-                </span>
-                <span className="text-sm font-light text-paper/60">
-                  {site.pricing.qualifier}
-                </span>
-              </span>
-            </div>
-            <span className="hidden h-10 w-px bg-paper/15 sm:block" />
-            <span className="text-xs font-light leading-relaxed text-paper/70 sm:text-sm">
-              Only <span className="font-medium text-goldsoft">15 of 39</span> plots
-              <br className="hidden sm:block" /> still available
+            <span className="block text-[10px] font-medium uppercase tracking-widest2 text-goldsoft sm:text-[11px]">
+              {site.pricing.eyebrow}
             </span>
+            <span className="mt-1.5 flex items-baseline gap-2.5">
+              <span className="font-display text-[clamp(1.9rem,3.6vw,2.75rem)] font-light leading-none text-paper">
+                {site.pricing.from}
+              </span>
+              <span className="text-sm font-light text-paper/55">
+                {site.pricing.qualifier}
+              </span>
+            </span>
+            <span className="mt-2.5 block text-xs font-light text-paper/70 sm:text-sm">
+              Only <span className="font-medium text-goldsoft">15 of 39</span> plots still
+              available
+            </span>
+            <p className="mt-2.5 max-w-md text-[11px] font-light leading-relaxed text-paper/40">
+              {site.pricing.note}
+            </p>
           </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.9 }}
-            className="mt-3 max-w-md text-[11px] font-light leading-relaxed text-paper/45"
-          >
-            {site.pricing.note}
-          </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
