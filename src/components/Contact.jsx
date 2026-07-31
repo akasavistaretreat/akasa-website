@@ -45,6 +45,7 @@ export default function Contact() {
   //   unconfirmed — we tried, we cannot tell whether it landed, we say so
   //   unsaved     — no endpoint configured, so WhatsApp is the only route
   const [status, setStatus] = useState("idle");
+  const [whatsappOpened, setWhatsappOpened] = useState(false);
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
@@ -99,17 +100,30 @@ export default function Contact() {
   const notice = {
     saved: {
       tone: "bg-moss/10 text-moss",
-      text: "Thank you — your enquiry has been received. The promoters will connect with you shortly. You can also continue the conversation on WhatsApp now.",
+      title: "Thank you — your enquiry has been received.",
+      text: "The promoters will call you shortly to talk through availability and arrange your site visit. You can also start the conversation on WhatsApp right away.",
     },
     unconfirmed: {
       tone: "bg-gold/10 text-charcoal",
-      text: "We couldn't confirm your enquiry reached us. Please send it on WhatsApp or call a promoter directly — that way you know it's landed. Sorry for the detour.",
+      title: "We couldn't confirm your enquiry reached us.",
+      text: "Please send it on WhatsApp or call a promoter directly — that way you know it's landed. Sorry for the detour.",
     },
     unsaved: {
       tone: "bg-gold/10 text-charcoal",
-      text: "Your details aren't stored on this site yet. Please send them via WhatsApp or call a promoter directly so nothing is missed.",
+      title: "Your details aren't stored on this site yet.",
+      text: "Please send them via WhatsApp or call a promoter directly so nothing is missed.",
     },
   }[status];
+
+  // Shown after the visitor taps through to WhatsApp. Deliberately says "press
+  // send" — tapping the button only opens WhatsApp with the message drafted;
+  // it doesn't send anything, so promising a reply outright would be a
+  // half-truth if they never hit send.
+  const whatsappNotice = whatsappOpened && {
+    tone: "bg-moss/10 text-moss",
+    title: "Thank you — WhatsApp is open with your details.",
+    text: "Press send and the promoters will reply shortly. You're welcome to call them directly too.",
+  };
 
   return (
     <section id="contact" className="section bg-forest">
@@ -187,24 +201,6 @@ export default function Contact() {
             onSubmit={handleSubmit}
             className="rounded-card bg-paper p-8 shadow-lift sm:p-10"
           >
-            {notice && (
-              <div
-                role="status"
-                aria-live="polite"
-                className={`mb-6 rounded-xl px-4 py-3 text-sm ${notice.tone}`}
-              >
-                <p>{notice.text}</p>
-                <a
-                  href={whatsappHref()}
-                  target="_blank"
-                  rel="noopener"
-                  className="mt-3 inline-block rounded-full bg-forest px-5 py-2 text-xs font-medium text-paper transition hover:bg-forest/90"
-                >
-                  Continue on WhatsApp
-                </a>
-              </div>
-            )}
-
             <div className="grid gap-4 sm:grid-cols-2">
               {/* name + autoComplete let iOS and Chrome autofill a visitor's
                   details in one tap, which measurably lifts completion on
@@ -314,6 +310,37 @@ export default function Contact() {
             >
               {status === "sending" ? "Sending…" : "Submit Enquiry"}
             </button>
+
+            {/* Confirmation sits below the button, where the eye already is
+                after pressing it. Above the fields it was easy to miss on a
+                phone, since submitting doesn't scroll anywhere. The WhatsApp
+                acknowledgement takes over once they tap through, so the panel
+                always reflects the last thing they actually did. */}
+            {(whatsappNotice || notice) && (
+              <div
+                role="status"
+                aria-live="polite"
+                className={`mt-5 rounded-xl px-4 py-4 text-sm ${
+                  (whatsappNotice || notice).tone
+                }`}
+              >
+                <p className="font-medium">{(whatsappNotice || notice).title}</p>
+                <p className="mt-1 font-light leading-relaxed">
+                  {(whatsappNotice || notice).text}
+                </p>
+                {!whatsappOpened && (
+                  <a
+                    href={whatsappHref()}
+                    target="_blank"
+                    rel="noopener"
+                    onClick={() => setWhatsappOpened(true)}
+                    className="mt-3 inline-block rounded-full bg-forest px-5 py-2 text-xs font-medium text-paper transition hover:bg-forest/90"
+                  >
+                    Continue on WhatsApp
+                  </a>
+                )}
+              </div>
+            )}
             <p className="mt-4 text-center text-[11px] font-light text-charcoal/45">
               By submitting, you agree to be contacted about AKASA Valley Retreat. No
               investment returns are guaranteed.
